@@ -1,5 +1,3 @@
-// http://wbo2.com/~techedge.com.au/vehicle/aldl160/160serial.htm
-
 #define ALDL_PIN 0
 
 #define SERIAL_DEBUG
@@ -17,8 +15,8 @@
 #define ALDL_MAX_PACKET_TIME 5925
 
 // Approx "start bit" max microsecs when transmitting a "0"
-#define ALDL_0_MIN_LENGTH 360 
-#define ALDL_0_MAX_LENGTH 370 
+#define ALDL_0_MIN_LENGTH 360
+#define ALDL_0_MAX_LENGTH 370
 
 // Approx "start bit" min microsecs when transmitting a "1"
 #define ALDL_1_MIN_LENGTH 1850
@@ -60,7 +58,7 @@ void setup() {
   Serial.println(ALDL_PIN);
   #endif
   attachInterrupt(ALDL_PIN, interrupt, CHANGE);
-  
+
    for (int i = 0; i < ALDL_NUM_WORDS; i++) {
     buf[i] = (byte)0x00;
    }
@@ -70,18 +68,6 @@ void loop() {
 }
 
 void readBit() {
-  /*
-  if (bufIndex != 5)
-    return;
-  Serial.print("MPH: ");
-  Serial.print(buf[5]);
-  Serial.print(" - ");
-  Serial.println(buf[5], BIN);
-  return;
-  if (bufIndex < 10)
-    return;
-  Serial.println(bufIndex);
-  return;*/
   while (readIndex < bufIndex) {
     Serial.print(readIndex+1);
     Serial.print("/");
@@ -114,7 +100,7 @@ void interrupt() {
   if (inSync) {
     if (bitIndex == 0) {
       if (curBit == 1) {
-        myTimer.end(); 
+        myTimer.end();
         inSync = false;
         bufIndex = 0;
         Serial.println("Invalid start bit");
@@ -126,7 +112,7 @@ void interrupt() {
       if (++bitIndex == 9) {
         bitIndex = 0;
         if (++bufIndex == ALDL_NUM_WORDS) {
-          myTimer.end(); 
+          myTimer.end();
           inSync = false;
           //Serial.println("Out of sync");
         }
@@ -139,13 +125,12 @@ void interrupt() {
       syncCount = 0;
       bitIndex = 0;
       bufIndex = 0;
-      myTimer.begin(readBit, READ_INTERVAL); 
+      myTimer.begin(readBit, READ_INTERVAL);
       Serial.println("Synced");
     }
   }else{
     syncCount = 0;
   }
-    
+
   prev = current;
 }
-
