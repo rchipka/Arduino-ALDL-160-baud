@@ -1,0 +1,156 @@
+07/06/93     UPDATE USAGE                                             B.HENSON
+                        DATA STREAM A48   SPECIFICATION
+
+       ENGINE  USAGES:
+            2.0 TBI    (LQ5)   (VIN=6)   82
+            2.0 TBI    (LR9)   (VIN=B)   82
+
+
+       DATA PIN:        D
+
+       BAUD RATE :      160 BAUD
+
+       MODES:           10K MODE ..... 20 WORDS
+                        OPEN    ...... 5  WORDS
+                        SHORTED ...... 20 WORDS
+
+
+
+
+
+..HEAD02L ALDL DATA LIST 
+..HEAD03L NUMBER OF DATA WORDS - 20
+..HEAD04L 10K
+..HEAD05L WORD  BIT   LOCATION
+..HEAD06L ----  ---   ---------------
+
+    1           MODE WORD 2
+         0       ROAD SPEED PULSE OCCURRED
+         1       ESC FAILURE =1
+         2       REFERENCE PULSE OCCURRED
+         3       DIAGNOSTICS IN BACKUP SPARK & FUEL TEST MODE = 1
+         4       DIAGNOSTTICS N DIAGNOSTIC MODE
+         5       DIAGNOSTICS IN ALDL MODE
+         6       HIGH BATTERY VOLTAGE
+         7       NOT USED
+    2           PROMID (MSB)
+    3           PROMID (LSB)
+    4           IAC POSITION
+    5           COOLANT TEMPERATURE
+    6           VEHICLE SPEED                           MPH = N
+    7           MANIFOLD ABSOLUTE PRESSURE              VOLTS = N * .0196
+    8           ENGINE SPEED                            RPM = N * 25
+    9           THROTTLE POSITION SENSOR                VOLTS = N * .0196
+    10          INTEGRATOR
+    11          OXYGEN SENSOR                           MV = N * 4.44
+    12          MALF FLAG WORD 1
+         0       MALF CODE 24
+         1        NOT USED
+         2       MALF CODE 22
+         3       MALF CODE 21
+         4       MALF CODE 15
+         5       MALF CODE 14
+         6       MALF CODE 13
+         7       MALF CODE 12
+    13          MALF FLAG WORD 2
+         0       MALF CODE 42
+         1        NOT USED
+         2        NOT USED
+         3       MALF CODE 34
+         4       MALF CODE 33
+         5        NOT USED
+         6        NOT USED
+         7        NOT USED
+    14          MALF FLAG WORD 3
+         0       MALF CODE 55
+         1        NOT USED
+         2        NOT USED
+         3        NOT USED
+         4       MALF CODE 51
+         5       MALF CODE 45
+         6       MALF CODE 44
+         7       MALF CODE 43
+    15          AIR/FUEL MODE WORD 1
+         0       CLEAR FLOOD
+         1       LEAN CONTROL ENABLE FLAG
+         2       LOW BATTERY IAC INHIBIT FLAG
+         3       NOT USED
+         4       ASYNCHRONOUS PULSE FLAG
+         5       FIRST TIME CLOSED LOOP FLAG
+         6       RICH/LEAN FLAG
+         7       CLOSED LOOP FLAG
+    16          MCU I/O WORD 1
+         0       IAC STEPPER COIL A
+         1       IAC STEPPER COIL B
+         2       IAC STEPPER COIL ON/OFF        1 = MOTOR ON
+         3       CANISTER PURGE                 1 = SOLENOID ON
+         4       TERMINATED INPUT
+         5       A/C ENABLED                    0 = A/C ENABLED
+         6       THIRD GEAR                     0 = THIRD GEAR OPEN
+         7       PARK/NEUTRAL                   0 = DRIVE
+    17          MCU I/O WORD 2
+         0       SERIAL DATA
+         1       NOT USED
+         2       TRANSMISSION CONVERTER CLUTCH  1 = SOLENOID ON
+         3       COP2
+         4       IGNITION                       0 = IGNITION ON
+         5       VEHICLE ELAPSED TIMER          0 = TIMED OUT
+         6       CRANK                          0 = CRANKING
+         7       NOT USED
+    18          BATTERY VOLTAGE                         VOLTS = N * .1
+    19          BLOCK LEARN MULTIPLIER
+    20          O2 CROSS COUNTS
+
+
+..HEAD02L
+..HEAD03L
+..HEAD04L
+..HEAD05L
+..HEAD06L
+        COOLANT TEMPERATURE TABLE
+
+
+        DEGREES                 A/D
+           C                    COUNTS
+
+        -40                     253
+        -30                     251
+        -25                     250
+        -20                     247
+        -15                     245
+        -10                     241
+        - 5                     237
+          0                     231
+          5                     225
+         10                     218
+         15                     209
+         20                     199
+         25                     189
+         30                     177
+         35                     165
+         40                     152
+         45                     139
+         50                     126
+         55                     114
+         60                     102
+         65                      92
+         70                      81
+         75                      72
+         80                      64
+         90                      50
+         95                      44
+        100                      39
+        105                      34
+        110                      30
+        115                      26
+        120                      23
+        125                      21
+        130                      18
+        135                      16
+        140                      14
+        145                      13
+        150                      12
+
+
+
+

@@ -1,0 +1,317 @@
+
+
+                 DATA STREAM  A22  SPECIFICATION
+
+ ENGINE USAGE:
+    4.1L DFI - (LT8) - (8) - 86, 87 CADILLAC "C" CAR
+
+ DATA PIN : READ DATA ON PIN "E" OF ALDL CONNECTOR
+
+ BAUD RATE : 160 BAUD
+
+..PAGE
+
+
+                      1986 CADILLAC "C"
+                ALDL MODING AND DATA INFORMATION
+
+    Purpose:  The purpose of this document is to provide a
+detailed definition of the ALDL moding and data list for the 1986
+Cadillac "C" (DEVILLE/FLEETWOOD, not FLEETWOOD BROUGHAM) vehicles
+equipped with the 4.1L V-8 Digital Fuel Injected engine.
+
+    Organization:  A complete ALDL listing (BCM data list and ECM
+long data list) is provided first.  Following the listing is
+documentation concerning the ALDL initiation mechanization and
+mode availability.
+
+
+
+
+
+
+..page
+..head01 BCM DATA LIST - MODE 3
+..head03 NUMBER OF DATA WORDS - 21
+..head05 WORD   BIT   DESCRIPTION                   EQUATION
+..head06   NO.   NO.
+
+  1          MODE WORD
+        7     DIAGNOSTICS ACTIVE            1=ACTIVE
+        6     HOLD DIAGNOSTICS              1=HOLD
+        5     CLEAR DIAGNOSTICS             1=CLEAR
+        4     ECON KEY STATUS               1=ACTIVE
+        3     LO KEY STATUS                 1=ACTIVE
+        2     CODE 52 ACKNOWLEDGEMENT       1=ACKNOWLEDGED
+        1     HI KEY STATUS                 1=ACTIVE
+        0     FAN FAILURE                   1=FAN FAILED
+  2          MODE WORD
+        7     NOT USED
+        6     METRIC SWITCH STATUS          1=METRIC
+        5     HVAC PRESSURE SWITCH          1=LOW PRESSURE
+        4     HIGH FAN                      1=FAN ON HIGH
+        3     HIGH BLOWER                   1=BLOWER ON HIGH
+        2     A/C POSSIBLE                  1=CLUTCH POSSIBLE
+        1     A/C CLUTCH STATUS             1=CLUTCH ENERGIZED
+        0     REAR DEFOGGER                 1=RR DEF ENERGIZED
+  3          OUTSIDE AIR TEMP, FILTERED    DEG F=N - 40
+  4          A/C HIGH SIDE TEMP (C)        DEG C=N - 40
+  5          MALF CODES                    Bit value 1 =
+        7     B010 MALF CODE                  then MALF code set
+        6     B011 MALF CODE
+        5     B012 MALF CODE
+        4     B013 MALF CODE
+        3     B014 MALF CODE
+        2     B030 MALF CODE
+        1     B031 MALF CODE
+        0     B032 MALF CODE
+  6          MALF CODES                    CURRENT CODES ONLY
+        7     B040 MALF CODE
+        6     B041 MALF CODE
+        5     NOT USED
+        4     B046 MALF CODE
+        3     B047 MALF CODE
+        2     B048 MALF CODE
+        1     B049 MALF CODE
+        0     B050 MALF CODE
+..PAGE
+..head03
+  7          MODE WORD
+        7     RANGE KEY STATUS              1=ACTIVE
+        6     INSTANT MPG KEY STATUS        1=ACTIVE
+        5     AVE MPG KEY STATUS            1=ACTIVE
+        4     FUEL USED KEY STATUS          1=ACTIVE
+        3     RESET KEY STATUS              1=ACTIVE
+        2     NOT USED
+        1     NOT USED
+        0     NOT USED
+  8          MODE WORD
+        7     COOLER KEY STATUS             1=ACTIVE
+        6     WARMER KEY STATUS             1=ACTIVE
+        5     OUTSIDE TEMP KEY STATUS       1=ACTIVE
+        4     OFF KEY STATUS                1=ACTIVE
+        3     ECON KEY STATUS               1=ACTIVE
+        2     AUTO KEY STATUS               1=ACTIVE
+        1     FRONT DEFROST KEY STATUS      1=ACTIVE
+        0     REAR DEFOG KEY STATUS         1=ACTIVE
+  9          MODE WORD
+        7     A/C CLUTCH OUTPUT STATUS      1=CLUTCH ON
+        6     REAR DEFOG OUTPUT STATUS      1=RR DEF ON
+        5     WATER VALVE OUTPUT STATUS     1=ON - NO WATER FLOW
+        4     RECIRC DOOR OUTPUT STATUS     1=ON - RECIRC AIR
+        3     DEFROST DOOR OUTPUT STATUS    1=ON - A/C VENTS
+        2     UP/DOWN DOOR OUTPUT STATUS    1=ON - UP (A/C,DEF)
+        1     MIX DOOR DIRECTION            1=REV,0=FOR
+        0     MIX DOOR DRIVE STATUS         1=DRIVE OFF
+  10         FUEL LEVEL REF VOLTAGE (V)    VOLTS=N*.0639
+  11         FUEL LEVEL SENSOR             SEE TABLE 2
+  12         A/C LO SIDE TEMPERATURE       SEE TABLE 3
+  13         IN CAR TEMPERATURE            SEE TABLE 4
+  14         AIR MIX DOOR POSITION         SEE TABLE 5
+  15         DIM POT (%)                   %=(N15/V16) * 100
+  16         PARK LAMP REFERENCE (V)       VOLTS=N*.0639
+  17         OUTSIDE AIR TEMP, UNFILTERED  SEE TABLE 3
+  18         MODE WORD
+        7     NOT USED
+        6     DOOR JAMB SWITCH STATUS       1=DOOR OPEN
+        5     NOT USED
+        4     METRIC/ENGLISH DISPLAY        1=METRIC
+        3     NOT USED
+        2     HVAC LOW PRESSURE STATUS      1=LOW PRESSURE
+        1     WAIT TO START STATUS          1=WAIT
+        0     WATER IN FUEL STATUS          1=WATER IN FUEL
+  19         BCM PROM WORD 1
+  20         BCM PROM WORD 2
+  21         CURRENT ALDL MODE STATUS
+
+
+..PAGE
+..head01
+..head05
+..head06
+    Calculate word 11 voltage by V=N*.0639 and then calculate the
+fuel sender ratio by V11/V10=RATIO. Use ratio for table lookup.
+
+  RATIO          FUEL LEVEL              RATIO         FUEL LEVEL
+                  (GALS)                                 (GALS)
+  .0000             0.0                  .5625            11.7
+  .0625             1.8                  .6250            12.8
+  .1250             2.9                  .6875            13.8
+  .1875             3.9                  .7500            14.4
+  .2500             5.0                  .8125            15.1
+  .3125             6.1                  .8750            15.7
+  .3750             7.5                  .9375            16.6
+  .4375             9.0                 1.0000            21.0
+  .5000            10.5
+
+..head01 ALDL ECM LONG DATA LIST - MODE 1
+..head03 NUMBER OF DATA WORDS - 29
+..head05  WORD   BIT  DESCRIPTION                   EQUATION
+..head06   NO.   NO.
+
+  1          ECM PROM ID WORD 1
+  2          ECM PROM ID WORD 2
+  3          MALF WORD 1                  Bit value 1 =
+      7       E012C MALF CODE               then MALF code set
+      6       E013C MALF CODE
+      5       E014C MALF CODE                                    
+      4       E015C MALF CODE
+      3       E016C MALF CODE
+      2             NOT USED
+      1       E018C MALF CODE
+      0       E019C MALF CODE
+  4          MALF WORD 2
+      7       E020C MALF CODE
+      6       E021C MALF CODE
+      5       E022C MALF CODE
+      4       E023C MALF CODE
+      3       E024C MALF CODE
+      2             NOT USED
+      1       E026C MALF CODE
+      0       EO27C MALF CODE
+  5          MALF WORD 3
+      7       E028C MALF CODE
+      6       E029C MALF CODE
+      5       E030C MALF CODE
+      4       E031C MALF CODE
+      3       E032C MALF CODE
+      2             NOT USED
+      1       E034C MALF CODE
+      0             NOT USED
+  6          MALF WORD 4
+      7             NOT USED
+      6       E037C MALF CODE
+      5       E038C MALF CODE
+      4       E039C MALF CODE
+      3       E040C MALF CODE
+      2             NOT USED
+      1             NOT USED
+      0             NOT USED
+..PAGE
+..head03
+  7          MALF WORD 5
+      7       E044C MALF CODE
+      6       E045C MALF CODE
+      5             NOT USED
+      4       E047C MALF CODE
+      3       E048C MALF CODE
+      2       NOT USED
+      1       NOT USED
+      0       E051C MALF CODE
+  8          MALF CODES
+      7       E052H MALF CODE
+      6       E053H MALF CODE
+      5       NOT USED
+      4       E055H MALF CODE
+      3       NOT USED
+      2       NOT USED
+      1       NOT USED
+      0       E059H MALF CODE
+   9         MALF CODES
+      7       E060H MALF CODE
+      6       E061H MALF CODE
+      5       E062H MALF CODE
+      4       E063H MALF CODE
+      3       E064H MALF CODE
+      2       E065H MALF CODE
+      1       E066H MALF CODE
+      0       E067H MALF CODE
+  10         COMPUTED BARO                 KPA=(N*.165) + 61
+  11         MANIFOLD AIR TEMPERATURE (C)  DEG C=(N*.75) - 40
+  12         COOLANT TEMPERATURE (C)       DEG C=(N*.75) - 40
+  13         O2 CROSS COUNTS               COUNTS
+  14         O2 SENSOR VOLTAGE (mV)        mV=N*4.444
+  15         BATTERY VOLTAGE               VOLTS=N/10
+  16         MODE WORD
+        7     NOT USED
+        6     NOT USED
+        5     AIR DIVERT STATUS             1=DIVERT ON
+        4     AIR SWITCH STATUS             1=SWITCH ON
+        3     NOT USED
+        2     NOT USED
+        1     NOT USED
+        0     NOT USED
+  17         MODE WORD
+        7     NOT USED
+        6     NOT USED
+        5     E-CELL                        1=HIGH MILEAGE
+        4     IGNITION                      1=IGN ON
+        3     NOT USED
+        2     NOT USED
+        1     NOT USED
+        0     NOT USED
+..PAGE
+  18         MODE WORD
+        7     BRAKE                         1=BRAKE ON
+        6     C/C RESUME/ACCEL              1=OFF
+        5     C/C SET/COAST                 1=OFF
+        4     C/C ON/OFF STATUS             1=ON 
+        3     ISC REVERSE PREVENT           1=PREVENT
+        2     DIAG. SEVERITY LIGHT          1=LAMP ON
+        1     ALTERNATOR MALF LIGHT         1=LAMP ON
+        0     C/C ENGAGED LIGHT             1=LAMP ON
+  19         MODE WORD
+        7     THROTTLE SWITCH               1=THROTTLE CLOSED
+        6     4TH GEAR STATUS               1=4TH GEAR ACTIVE
+        5     NOT USED
+        4     CRANK STATUS                  1=CRANK ACTIVE
+        3     NOT USED
+        2     VCC SOLENOID STATUS           1=ENERGIZED
+        1     ISC MOTOR DIRECTION           1=FORWARD
+        0     NOT USED
+  20         MAP (KPA)                     KPA=(N*.323)+20.4
+  21         FUEL INTEGRATOR               COUNTS
+  22         TPS (DEGREES)                 TPS=(N*.39)-10
+  23         ENGINE RPM                    RPM=N*25
+  24         VEHICLE SPEED (KPH)           KPH=N
+  25         INJECTOR PWM WORD 1 (ms)      ms=
+  26         INJECTOR PWM WORD 2 (ms)       N25*3.0966+N26*.01526
+  27         MODE WORD
+        7     NOT USED
+        6     NOT USED
+        5     NOT USED
+        4     ALTERNATOR F-TERMINAL         1=HIGH
+        3     3RD GEAR STATUS               1=3RD GEAR ACTIVE
+        2     OPEN/CLOSED LOOP STATUS       1=CLOSED LOOP
+        1     NOT USED
+        0     NOT USED
+  28         MODE WORD
+        7     PARK/NEUTRAL STATUS           1=IN P/N
+        6     NOT USED
+        5     POWER STEERING STATUS         1=LOADED
+        4     CAL PACK PRESENT              1=PAK PRESENT
+        3     CANNISTER PURGE               1=PURGING
+        2     COOLANT TEMP LIGHT            1=LAMP ON
+        1     EFE RELAY                     1=RELAY ENERGIZED
+        0     CHECK ENGINE LIGHT            1=LAMP ON
+  29         ECM ALDL MODE WORD 2          COUNTS
+
+
+..PAGE
+ALDL MECHANIZATION AND MODING SUMMARY
+
+    All ALDL data transmissions on these vehicles occurs on pin E
+of the ALDL connector.  The signal output is 12V at 160 baud with
+a 12V level specifying a logic 0 and a ground level specifying a
+logic 1.
+
+    ALDL moding is initiated by applying a timed (pulse width
+modulated) ground signal to pin B of the ALDL connector.  The
+available modes are selected by varying the pin B ground time
+from 0 to 500 msec on a continuously repeating 500 msec cycle.
+
+    All ALDL message transmissions follow a standardized format.
+First, each data list is preceded by a sychronization word which
+consists of nine logic 1's.  Second, each word which is not a
+sychronization word is preceded by a logic 0 synchronization bit.
+There is no time delay between subsequent words but there may be
+a time delay between subsequent data lists.  The data is trans
+mitted most significant bit first.
+
+..PAGE
+LAYOUT 000
+:ê  \B 
+  
+Su¶    <_        ˙ \---+----+----+----+---------+---------+---------+---------+--@-/----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     STANDARD 2      \B
+  <

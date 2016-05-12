@@ -1,0 +1,173 @@
+
+                        DATA STREAM A47   SPECIFICATION
+
+       ENGINE  USAGES:
+                4.1L DFI - LT8 - (8) -     82
+
+       DATA PIN:        D
+
+       BAUD RATE :      160 BAUD
+
+       MODES:           10K MODE ..... 39 WORDS
+                        SHORTED MODE.. 39 WORDS
+
+
+
+..HEAD02L ALDL DATA LIST 
+..HEAD03L NUMBER OF DATA WORDS - 39
+..HEAD04L ALDL MODE  
+..HEAD05L WORD  BIT   LOCATION
+
+    WORD  BIT   DESCRIPTION
+    ----  ---   ---------------
+    1           CONSTANT - ALL ZEROS
+    2           CONSTANT - ALL ZEROS
+    3           CONSTANT - ALL ZEROS
+    4           CONSTANT - ALL ZEROS
+    5           CONSTANT - ALL ZEROS
+    6           PROMID (MSB)
+    7           PROMID (LSB)
+    8           CONSTANT - HEX 39
+    9           CONSTANT - ALL ZEROS
+    10          CONSTANT - ALL ZEROS
+    11          CONSTANT - ALL ZEROS
+    12          CONSTANT - ALL ZEROS
+    13          PROMID # 2 (MSB)
+    14          PROMID # 2 (LSB)
+    15          DIAGNOSTIC CODE WORD 1
+        0        MALF CODE 19   FUEL PUMP VOLTAGE HIGH
+        1        MALF CODE 18   CRANK DISCRETE LOW
+        2        (MALF CODE 17)
+        3        MALF CODE 16   SYSTEM OVER/UNDER VOLTAGE
+        4        MALF CODE 15   COOLANT SENSOR LOW
+        5        MALF CODE 14   COOLANT SENSOR HIGH
+        6        MALF CODE 13   O2 SENSOR NOT READY
+        7        MALF CODE 12   NOT DISTRIBUTOR PULSES
+    16          DIAGNOSTIC CODE WORD 2
+        0        MALF CODE 27   THROTTLE SWITCH OPEN
+        1        MALF CODE 26   THROTTLE SWITCH SHORTED
+        2        MALF CODE 25   BYPASS MONITOR EST ENABLE FAILURE
+        3        MALF CODE 24   SPEED SENSOR FAILURE
+        4        MALF CODE 23   BYPASS MONITOR RUNNING FAILURE
+        5        MALF CODE 22   THROTTLE POSITION SENSOR LOW
+        6        MALF CODE 21   THROTTLE POSITION SENSOR HIGH
+        7        MALF CODE 20   FUEL PUMP VOLTAGE LOW
+    17          DIAGNOSTIC CODE WORD 3
+        0        MALF CODE 35   BARO SENSOR HIGH
+        1        MALF CODE 34   MAP HOSE OFF
+        2        MALF CODE 33   MAP/BARO CORRELATION
+        3        MALF CODE 32   MAP SENSOR LOW
+        4        MALF CODE 31   MAP SENSOR HIGH
+        5        MALF CODE 30   ISC MOTOR FAILURE
+        6        MALF CODE 29   FOURTH GEAR ALWAYS OFF
+        7        MALF CODE 28   FOURTH GEAR ALWAYS ON
+    18          DIAGNOSTIC CODE WORD 4
+        0                       NOT USED
+        1                       NOT USED
+        2                       NOT USED
+        3                       NOT USED
+        4        MALF CODE 39   TORQUE CONVERTER CLUTCH FAILURE
+        5        MALF CODE 38   AIR TEMP SENSOR LOW
+        6        MALF CODE 37   AIR TEMP SENSOR HIGH
+        7        MALF CODE 36   BARO SENSOR LOW
+
+
+    19          DIAGNOSTIC CODE WORD 5
+        0        MALF CODE 51   PROM CHECK
+        1                       NOT USED
+        2                       NOT USED
+        3                       NOT USED
+        4                       NOT USED
+        5                       NOTU USED
+        6        MALF CODE 45   O2 SENSOR RICH
+        7        MALF CODE 44   O2 SENSOR LEAN
+    20          DIAGNOSTIC CODE WORD 6
+        0                       NOT USED
+        1                       NOT USED
+        2                       NOT USED
+        3                       NOT USED
+        4                       NOT USED
+        5                       NOT USED
+        6                       NOT USED
+        7        MALF CODE 52   KEEP ALIVE MEMORY RESET
+    21          DIAGNOSTIC CODE WORD 7
+        0        MALF CODE 67   IMPROPER S/C R/A DURING CRUISE INITIALIZATION
+        1        MALF CODE 66   ENGINE RPM EXCEEDS A MAX. ALLOWABLE LIMIT
+        2        MALF CODE 65   COOLANT TEMP EXCEEDS A MAX. ALLOWABLE LIMIT
+        3        MALF CODE 64   CAR ACCEL EXCEEDS A MAX. ALLOWABLE LIMIT
+        4        MALF CODE 63   CAR AND SET SPEED DIFFERENCE TOO LARGE
+        5                       NOT USED
+        6        (MALF CODE 61)
+        7        MALF CODE 60   CRUISE TRANSMISSION OT IN DRIVE
+    22          BARO PRESSURE                           KPA = N*.165 + 61
+    23          COOLANT TEMPERATURE                     DEGREES C = N*.75 - 40
+    24          O2 CROSS COUNTS
+    25          OXYGEN SENSOR VOLTAGE                   VOLTS = N * .00392
+    26          ADU INPUT PORT 3 STATUS WORD
+        0        NOT USED
+        1        NOT USED
+        2        NOT USED
+        3        NOT USED
+        4        DIAGNOSTIC REQUEST STATUS              1 = NO  0 = YES
+        5        MPG REQUEST STATUS                     1 = NO  0 = YES
+        6        CRUISE CONTROL I/P SWITCH              1 = ON  0 = OFF
+        7        NOT USED
+    27          ADU INPUT PROT 1 STATUS WORD
+        0        NOT USED
+        1        NOT USED
+        2        CLOSED LOOP STATUS                     1 = CLOSED  0 = OPEN
+        3        NOT USED
+        4        IDLE SPEED MOTOR DIRECTION             1 = EXTEND 0 = RETRACT
+        5        NOT USED
+        6        CRUISE CONTROL ENGAGED                 1 = ENGAGED 0 = NO
+        7        ALWAYS SET TO "1"
+
+
+    28          MCU INPUT/OUTPUT PORT 1 STATUS WORD
+        0        NOT USED
+        1        ISC REVERSE PREVENT                    1 = YES  0 = NO
+        2        CANISTER PURGE SOLENOID STATUS         0 = PURGE ON
+        3        NOT USED
+        4        PARK/NEUTRAL SWITCH                    1 = DRIVE 0 = P/N
+        5        AIR CONDITIONER CLUTCH STATUS          1  = ON 0 = OFF
+        6        BRAKE SWITCH STATUS                    1 = ON  0 = OFF
+        7        NOT USED
+    29          MCU INPUT/OUTPUT PORT 3 STATUS WORD
+        0        AIR SWITCH SOLENOID                    1 = CLOSED 0 = OPEN
+        1        ENGINE COOLANT OVERTEMP LIGHT          1 = ON  0 = OFF
+        2        NOT USED
+        3        NOT USED
+        4        ENGINE CRANK DISCRETE                  1 = CRANKING 0 = NOT
+        5        IGNITION STATUS                        1 = ON  0 = OFF
+        6        CRUISE CONTROL SET/COAST ENABLE        1 = NO  0 = YES
+        7        NOT USED
+    30          ADU INPUT PROT 2 STATUS WORD
+        0        NOT USED
+        1        NOT USED
+        2        NOT USED
+        3        MPG RESET STATUS                       1 = NOT MPG  0 = MPG
+        4        CRUISE CONTROL RESUME/ACCEL ENABLE     1 = NO  0 = YES
+        5        REVERSE DISCRETE                       1 = REV 0 = NOT REV
+        6        NOT USED
+        7        NOT USED
+    31          NOT USED (BLOCK MODIFIER)
+    32          MCU INPUT/OUTPUT PORT 2 STATUS WORD
+        0        NOT USED
+        1        AIR DIVERT SOLENOID    1 = AIR @CONV/HEADS  0 = AIR @ THERMAC
+        2        NOT USED
+        3        TCC LOCK-UP STATUS                     1 = LOCKED
+        4        NOT USED
+        5        FUEL ECOMONY METRIC/ENGLISH DISPLAY    1 = ENGLISH 0 = METRIC
+        6        THROTTLE SWITCH                        1 = CLOSED 0 = OPEN
+        7        FOURTH GEAR ENGAGE STATUS              1 = IN 4TH GEAR
+    33          CLOSED LOOP INTEGRATOR
+    34          MANIFOLD AIR PRESSURE                   VOLTS = N *.1096
+                                                        KPA = N * .324 + 20.4
+    35          THROTTLE ANGLE                          DEGREES = N*.39 - 9.77
+    36          ENGINE SPEED                            RPM = N * 25
+    37          VEHICLE SPEED                           MPH = N
+    38          INJECTOR PULSE WIDTH (MSB) (1BYTE) MS = N * .01526
+    39          INJECTOR PULSE WIDTH (LSB)      WIDTH = N(38)*3.9+N(39)*.01526
+
+
+

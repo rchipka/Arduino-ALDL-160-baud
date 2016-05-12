@@ -1,0 +1,175 @@
+
+
+
+
+                        DATA STREAM A137   SPECIFICATION
+
+       SPECIFICATIONS FOR  DATA STREAM INFORMATION
+       -------------------------------------------
+
+       ENGINE   USAGE:
+            6.0L TBI   (LS0)   (VIN=P) 91
+            7.0L TBI   (LR0)   (VIN=M) 91
+            6.0L TBI   (LS0)   (VIN=P) 92 GMT530 TRUCK
+            7.0L TBI   (LR0)   (VIN=M) 92 GMT530 TRUCK
+            6.0L TBI   (LS0)   (VIN=P) 93 GMT530 TRUCK
+            7.0L TBI   (LR0)   (VIN=M) 93 GMT530 TRUCK
+            6.0L TBI   (LS0)   (VIN=P) 94 GMT530 TRUCK
+            7.0L TBI   (LR0)   (VIN=M) 94 GMT530 TRUCK
+*           6.0L TBI   (LS0)   (VIN=P) 95 GMT530 TRUCK
+*           7.0L TBI   (LR0)   (VIN=M) 95 GMT530 TRUCK
+
+       DATA PIN  : READ DATA ON PIN "E" OF ALDL CONNECTOR
+
+       BAUD RATE : 160 BAUD
+                   OPEN MODE    - 23 BYTES
+                   10K MODE     - 23 BYTES
+                   SHORTED MODE - 23 BYTES
+
+
+..END
+..HEAD02L ALDL DATA LIST
+..HEAD03L NUMBER OF DATA WORDS - 23
+..HEAD04L ALDL MODE
+..HEAD05L WORD  BIT   LOCATION
+
+
+
+WORD     DATA NAME           DESCRIPTION
+----     ---------           -----------
+
+ 1       MW2          MINOR LOOP MODE WORD
+                               DESCRIPTION
+            0     ROAD SPEED PULSE OCCURRED(6.25 MSEC CHECK)
+            1     O/L IDLE FLAG FOR AIR SWITCH ENGAGE AT IDLE
+            2     REFERENCE PULSE OCCURRED(6.25 MSEC CHECK)
+            3     DIAGNOSTIC SWITCH IN FACTORY TEST POSITION
+            4     DIAGNOSTIC SWITCH IN DIAGNOSTIC POSITION
+            5     DIAGNOSTIC SWITCH IN ALDL POSITION
+            6     IST TIME IDLE FLAG 0 = 1ST TIME, 1 = REGULAR
+            7     IDLE FLAG
+ 2       PROMIDA      FIRST PROMID WORD (MSB)
+ 3       PROMIDB      SECOND PROMID WORD (LSB)
+                      PROMID = (MSB)*256 + (LSB)
+ 4       ISSPMP       IAC PRESENT MOTOR POSITION
+                       N = STEPS
+ 5       ADCOOL       COOLANT TEMPERATURE A/D COUNTS ( EVEN DURING A COOLANT MALF.)
+                       SEE TABLE 1
+ 6       FILTMPH      FILTERED MPH VARIABLE ( UPPER = MPH FOR DISPLAY )
+                       MPH = N
+ 7       ADMAP        1 ATMOSPHERE MANIFOLD PRESSURE A/D COUNTS
+                       VOLTS = N*5/256
+ 8       NTRPMX       RPM VARIABLE USED FOR TABLE F1 EXTENTION LOGIC
+                       RPM = N * 25
+ 9       ADTHROT      THROTTLE POSITION SENSOR A/D COUNTS
+                       VOLTS = N*5/256
+ 10      INT          CLOOSED LOOP INTEGRATOR VALUE
+                       N = COUNTS
+ 11      ADO2A        OXYGEN SENSOR VARIABLE A/D COUNTS
+                       mV = N*4.44
+ 12      MALFFLG1     MALFUNCTION WORD 1
+            0     MALF CODE 24  VEHICLE SPEED SENSOR LOW
+            1     MALF CODE 23  NOT USED
+            2     MALF CODE 22  THROTTLE POSITION SENSOR LOW
+            3     MALF CODE 21  THROTTLE POSITION SENSOR HI
+            4     MALF CODE 15  COOLANT SENSOR LOW TEMPERATURE
+            5     MALF CODE 14  COOLANT SENSOR HIGH TEMPERATURE
+            6     MALF CODE 13  OXYGEN SENSOR
+            7     MALF CODE 12  NO REFERENCE PULSE (ENGINE NOT RUNNING)
+ 13      MALFFLG2     MALFUNCTION WORD 2
+            0     MALF CODE 42  EST MONITOR ERROR
+            1     MALF CODE 41  NOT USED
+            2     MALF CODE 35  NOT USED
+            3     MALF CODE 34  MAP SENSOR LOW
+            4     MALF CODE 33  MAP SENSOR HIGH
+            5     MALF CODE 32  EGR FAILURE
+            6     MALF CODE 31  GOVERNOR  MALFUNCTION
+            7     MALF CODE 25  NOT USED
+ 14      MALFFLG3     MALFUNCTION WORD 3
+            0     MALF CODE 55  ADU ERROR
+            1     MALF CODE 54  FUEL PUMP RELAY MALFUNCTION
+            2     MALF CODE 53  NOT USED
+            3     MALF CODE 52  CAL - PAK MISSING
+            4     MALF CODE 51  PROM ERROR
+            5     MALF CODE 45  OXYGEN SENSOR RICH
+            6     MALF CODE 44  OXYGEN SENSOR LEAN
+            7     MALF CODE 43  ESC FAILURE
+ 15      MWAF1        BIT STATUS WORD
+            0     NOT USED
+            1     LEARN CONTROL ENABLE FLAG ( 1 = ENABLE STORE, 0 = DISABLE )
+            2     1 = LOW BATTERY
+            3     A/F DECAY INTERRUPT DONE FLAG FOR COLD PARK  - TO - DRIVE
+            4     ASYNCHNONOUS PULSE FLAG (AP FLAG)
+            5     CLOSED LOOP FOR O/L IDLE CONDITION
+            6     RICH LEAN FLAG                           ( 1 = RICH 0 = LEAN )
+            7     CLOSED LOOP FLAG ( 1 = IN CLOSED LOOP, 0 = OPEN LOOP )
+ 16      ADBAT        A/D BATTERY VOLTAGE ( IGNITION VOLTAGE )
+                       VOLTS = N/10.33
+ 17      MCU210
+            0     IDLE KICKER LIGHT ( 1 = LAMP ON )
+            1     NOT USED
+            2     OF3 GOVERNOR OVER SPEED LIGHT  ( 1 = LIGHT ON )
+            3     TRANSMISSION SHIFT PATTERN SELECT ( 1 = WOT PATTERN )
+            4     PARK/NEUTRAL ( 1 = P/N, 0 = DRIVE )
+            5     HIGH GEAR ( 0 = SWITCH OPEN = HIGH GEAR ACTIVE )
+            6     IDLE KICKER SWITCH ( 1 = MONENTARY SWITCH CLOSED )
+            7     AIR CONDITIONER ( 0 = A/C REQUESTED )
+ 18      OLDPA3       ECU PA3 COUNTER VALUE FROM LAST MINOR LOOP
+                       N = KNOCK COUNTS
+ 19      BLM          BLOCK LEARN MULTIPLIER, SCALED 1, RANGE O -2.0
+                       N = COUNTS
+ 20      ALDLCNTR     OXYGEN SENSOR RICH/LEAN TRANSITION COUNTER
+                       N = TRANSITION COUNTS
+ 21      PPSWVLT      A/D POWER STEERING PREESURE SWITCH VOLTAGE
+                       VOLTS = N/10.33
+ 22      DESSPD       CURRENT DESIRED IDLE RPM
+                       RPM = N*12.5
+ 23      NTPSLD       THROTTLE POSITION LOAD AXIS VARIABLE
+                       % TPS = N/2.56
+
+
+        TABLE 1 --- COOLANT TEMPERATURE
+
+         A/D            DEGREES
+        COUNTS             C
+        -------         -------
+         255               -40
+         251               -30
+         250               -25
+         247               -20
+         245               -15
+         241               -10
+         237                -5
+         231                 0
+         225                 5
+         218                10
+         209                15
+         199                20
+         189                25
+         177                30
+         165                35
+         152                40
+         139                45
+         126                50
+         114                55
+         102                60
+          92                65
+          81                70
+          72                75
+          64                80
+          56                85
+          50                90
+          44                95
+          39               100
+          34               105
+          30               110
+          26               115
+          23               120
+          21               125
+          18               130
+          16               135
+          14               140
+          13               145
+          12               150
+           0               200
+

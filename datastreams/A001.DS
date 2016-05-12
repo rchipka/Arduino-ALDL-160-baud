@@ -1,0 +1,171 @@
+
+                        DATA STREAM A1    SPECIFICATION
+
+       SPECIFICATIONS FOR  DATA STREAM INFORMATION
+       -------------------------------------------
+
+       ENGINE   USAGE:
+              1.8l L4 TBI  (LH8)      - (O)    - 82, 83, 84, 85, 86
+              2.5l L4 TBI  (LR8, L68) - (R, U) - 83, 84, 85, 86
+              2.5l L4 TBI  (LQ9)      - (2)    - 83, 84, 85, 86
+              2.5l L4 TBI  (LN8)      - (E)    - 85, 86  TRUCKS
+              5.0  CFI     (LU5)        (S)    - 83
+
+       DATA PIN  : READ DATA ON PIN "E" OF ALDL CONNECTOR
+
+       BAUD RATE : 160 BAUD
+
+       MODES     : DIAGNOSTIC ENABLE:
+                     MODULATED . . . . NO
+                     10K . . . . . . . YES - 20 WORDS
+                     3.9K  . . . . . . YES - 20 WORDS
+                     NORMAL  . . . . . YES - 20 WORDS
+                     SHORTED . . . . . YES - 20 WORDS
+
+       DEFINITION: ALL DATA STREAMS CONTAIN THE SAME INFORMATION
+                   IN THE SAME FORMAT
+
+
+
+  DATA STREAM DEFINITION
+  ----------------------
+    WHERE "WORD" IS THE BYTE OF DATA STREAM AS IT IS READ FROM THE VEHICLE
+    AND "BIT" IS THE BIT OF THE BYTE, WHERE 0 IS THE LEAST SIGNIFICANT BIT.
+
+    WORD  BIT   DESCRIPTION
+    1           MODE WORD 2
+            0   ROAD SPEED PULSE OCCURRED                1 = PULSE OCCURRED
+            1   ROAD SPEED FILTER EXERCISE FLAG          1 = ROAD SPEED
+            2   REFERENCE PULSE OCCURRED                 1 = PULSE OCCURRED
+            3   DIAGNOSTIC SWITCH IN FACTORY TEST        1 = 3.9K MODE
+            4   DIAGNOSTIC SWITCH IN DIAGNOSTIC POSITION 1 = SHORTED MODE
+            5   DIAGNOSTIC SWITCH IN ALDL POSITION       1 = 10K MODE
+            6   HIGH BATTERY VOLTAGE                     1 = HIGH VOLTAGE
+            7   OLD BLM CELL FLAG (AIR/FUEL)
+    2           FIRST PROM ID WORD
+    3           SECOND PROM ID WORD
+    4           IAC PRESENT MOTOR POSITION
+    5           COOLANT TEMPERATURE   A/D COUNTS
+    6           FILTERED MPH VARIABLE - VEHICLE SPEED
+    7           MANIFOLD ABSOLUTE PRESSURE
+    8           ENGINE SPEED
+    9           THROTTLE POSITION  SENSOR
+   10           INTEGRATOR
+   11           OXYGEN SENSOR
+   12           MALFUNCTION FLAG WORD 1
+            0   C24 VEHICLE SPEED SENSOR
+            1   C23 NOT USED
+            2   C22 THROTTLE POSITION SENSOR LOW
+            3   C21 THROTTLE POSITION SENSOR HIGH
+            4   C15 COOLANT SENSOR LOW TEMPERATURE
+            5   C14 COOLANT SENSOR HIGH TEMPERATURE
+            6   C13 OXYGEN SENSOR OPEN
+            7   C12 NO REFERENCE PULSES (ENG. NOT RUNNING)
+   13           MALFUNCTION FLAG WORD 2
+            0   C42 EST MONITOR ERROR
+            1   C41 NOT USED
+            2   C35 IAC ERROR
+            3   C34 MAP SENSOR LOW
+            4   C33 MAP SENSOR HIGH
+            5   C32 NOT USED
+            6   C31 NOT USED
+            7   C25 NOT USED
+   14           MALFUNCTION FLAG WORD 3
+            0   C55 ADU ERROR
+            1   C54 NOT USED
+            2   C53 NOT USED
+            3   C52 NOT USED
+            4   C51 PROM ERROR
+            5   C45 OXYGEN SENSOR RICH
+            6   C44 OXYGEN SENSOR LEAN
+            7   C43 NOT USED
+   15           AIR-FUEL (A/F) MODE WORD
+            0   CLEAR FLOOD FLAG            1 = CRANKED IN CLEAR FLOOD
+            1   LEARN CONTROL ENABLE FLAG   1 = ENABLE
+            2   LOW BATTERY VOLTAGE         1 = LOW BATTERY
+            3   HYSTERESIS FLAG FOR LOW RPM INT RESET
+            4   ASYNCHRONOUS PULSE FLAG     1 = ASYNCHRONOUS
+            5   FIRST TIME CLOSED LOOP FLAG 1 = FIRST TIME
+            6   RICH LEAN FLAG              1 = RICH          0 = LEAN
+            7   CLOSED LOOP FLAG            1 = CLOSED LOOP   0 = OPEN
+
+
+  DATA STREAM DEFINITION (CONT.)
+  ------------------------------
+
+
+    WORD  BIT   DESCRIPTION
+   16           ADDIW+1 MODE WORD  / IO STATUS WORD 2
+            0   NOT USED
+            1   NOT USED
+            2   NOT USED
+            3   POWER STEERING BIT          1 = ACTIVE
+            4   A/D DIAGNOSTIC ALCL
+            5   A/C SWITCH INDICATOR        0 = ENABLED
+            6   CRANK SIGNAL BIT            1 = CRANKING
+            7   PARK/NEUTRAL INDICATOR      0 = DRIVE
+   17           MCU  INPUT/OUTPUT STATUS WORD / IO STATUS WORD 1
+            0   IACA                        1 = ON
+            1   IACB                        1 = ON
+            2   TORQUE CONVERTOR CLUTCH     1 = CONV. LOCKED, SOLENOID ON
+            3   COP2
+            4   FAN                         1 = ENABLED, SOLENOID ON
+            5   A/C CLUTCH                  1 = ENABLED, SOLENOID ON
+            6   STEPPER MOTOR               1 = MOTOR ON
+            7   NOT USED
+   18           BATTERY VOLTAGE
+   19           BLOCK LEARN MULTIPLIER
+   20           ALDL RICH LEAN CHANGE COUNTER / TOTAL CROSSOVER COUNTS
+
+
+
+
+        CONVERSION FOR A/D COUNTS TO ENGINEERING UNITS
+        ----------------------------------------------
+
+                N = A/D COUNTS
+               EU = ENGINEERING UNITS
+
+        TRY TO KEEP CONVERSION ROUTINES IN ONE OF THE FOLLOWING
+        FORMATS WITH ONLY TWO VARIABLES:
+                EU = N*A + B
+                EU =
+                EU = N
+                EU = TABLE LOOKUP
+
+
+
+
+
+                                                         ENGINEERING
+    WORD   DESCRIPTION                     CONVERSION      UNIT
+    1      MODE WORD 2                     NONE
+    2      FIRST PROM ID WORD              NONE
+    3      SECOND PROM ID WORD             NONE
+    4      IAC                             NONE
+    5      COOLANT TEMPERATURE             SEE TABLES       DEGREES C
+    6      VEHICLE SPEED                   NONE
+    7      MANIFOLD ABSOLUTE PRESSURE      EU = N*.0196     VOLTS
+    8      RPM                             EU = N*25        RPM
+    9      THROTTLE POSITION               EU = N*.0196     VOLTS
+   10      INTEGRATOR                      NONE
+   11      OXYGEN SENSOR                   EU = N*4.44      MILLIVOLTS
+   12      MALF FLAG WORD 1                NONE
+   13      MALF FLAG WORD 2                NONE
+   14      MALF FLAG WORD 3                NONE
+   15      FUEL-AIR MODE WORD              NONE
+   16      ADDIW+1 MODE WORD               NONE
+   17      MCU INPUT/OUTPUT STATUS WORD    NONE
+   18      BATTERY VOLTAGE                 EU = N*.1        VOLTS
+   19      BLOCK LEARN MULTIPLIER          NONE
+   20      ALDL RICH LEAN CHANGE COUNTER   SEE **
+
+
+ ** : THIS IS A ROLLOVER COUNTER (0 - 255), TAKE CURRENT DATA STREAM READING
+      SUBTRACT LAST DATA STREAM READING = CROSSCOUNTS.  IF CURRENT READING
+      MINUS LAST READING IS < 0, THEN TAKE CURRENT READING + 255 - LAST
+      READING = CROSSCOUNTS.
+
+
+
+

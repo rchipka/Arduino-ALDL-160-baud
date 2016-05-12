@@ -1,0 +1,234 @@
+07/01/93   include 3.9k mode.                                           B.henson
+                        DATA STREAM A45   SPECIFICATION
+
+                4.1L DFI - LT8 - (8) -     83,84,85
+
+
+       DATA PIN:        D
+
+       BAUD RATE :      160 BAUD
+
+       MODES:           10K MODE ..... 28 WORDS
+*                       3.9K MODE .... 17 WORDS
+                        SHORTED MODE.. 28 WORDS
+
+
+
+
+..HEAD02L ALDL DATA LIST 
+..HEAD03L NUMBER OF DATA WORDS - 28
+..HEAD04L ALDL MODE  
+..HEAD05L WORD  BIT   LOCATION
+    ----  ---   ---------------
+    01          PROMID (MSB)
+    02          PROMID (LSB)
+    03          DIAGNOSTIC CODE WORD 1
+        0        MALF CODE 19   FUEL PUMP VOLTAGE HIGH
+        1        MALF CODE 18   CRANK DISCRETE LOW
+        2        (MALF CODE 17)
+        3        MALF CODE 16   SYSTEM OVER/UNDER VOLTAGE
+        4        MALF CODE 15   COOLANT SENSOR LOW
+        5        MALF CODE 14   COOLANT SENSOR HIGH
+        6        MALF CODE 13   O2 SENSOR NOT READY
+        7        MALF CODE 12   NOT DISTRIBUTOR PULSES
+    04          DIAGNOSTIC CODE WORD 2
+        0        MALF CODE 27   THROTTLE SWITCH OPEN
+        1        MALF CODE 26   THROTTLE SWITCH SHORTED
+        2        MALF CODE 25   BYPASS MONITOR EST ENABLE FAILURE
+        3        MALF CODE 24   SPEED SENSOR FAILURE
+        4        MALF CODE 23   BYPASS MONITOR RUNNING FAILURE
+        5        MALF CODE 22   THROTTLE POSITION SENSOR LOW
+        6        MALF CODE 21   THROTTLE POSITION SENSOR HIGH
+        7        MALF CODE 20   FUEL PUMP VOLTAGE LOW
+    05          DIAGNOSTIC CODE WORD 3
+        0        MALF CODE 35   BARO SENSOR HIGH
+        1        MALF CODE 34   MAP HOSE OFF
+        2        MALF CODE 33   MAP/BARO CORRELATION
+        3        MALF CODE 32   MAP SENSOR LOW
+        4        MALF CODE 31   MAP SENSOR HIGH
+        5        MALF CODE 30   ISC MOTOR FAILURE
+        6        MALF CODE 29   FOURTH GEAR ALWAYS OFF
+        7        MALF CODE 28   FOURTH GEAR ALWAYS ON
+    06          DIAGNOSTIC CODE WORD 4
+        0                       NOT USED
+        1                       NOT USED
+        2                       NOT USED
+        3                       NOT USED
+        4        MALF CODE 39   TORQUE CONVERTER CLUTCH FAILURE
+        5        MALF CODE 38   AIR TEMP SENSOR LOW
+        6        MALF CODE 37   AIR TEMP SENSOR HIGH
+        7        MALF CODE 36   BARO SENSOR LOW
+    07          DIAGNOSTIC CODE WORD 5
+        0        MALF CODE 51   PROM CHECK
+        1                       NOT USED
+        2                       NOT USED
+        3                       NOT USED
+        4                       NOT USED
+        5                       NOTU USED
+        6        MALF CODE 45   O2 SENSOR RICH
+        7        MALF CODE 44   O2 SENSOR LEAN
+
+
+    08          DIAGNOSTIC CODE WORD 6
+        0                       NOT USED
+        1                       NOT USED
+        2                       NOT USED
+        3                       NOT USED
+        4                       NOT USED
+        5                       NOT USED
+        6        MALF CODE 53   DIST REF OPEN
+        7        MALF CODE 52   KEEP ALIVE MEMORY RESET
+    09          DIAGNOSTIC CODE WORD 7
+        0        MALF CODE 67   IMPROPER S/C R/A DURING CRUISE INITIALIZATION
+        1        MALF CODE 66   ENGINE RPM EXCEEDS A MAX. ALLOWABLE LIMIT
+        2        MALF CODE 65   COOLANT TEMP EXCEEDS A MAX. ALLOWABLE LIMIT
+        3        MALF CODE 64   CAR ACCEL EXCEEDS A MAX. ALLOWABLE LIMIT
+        4        MALF CODE 63   CAR AND SET SPEED DIFFERENCE TOO LARGE
+        5                       NOT USED
+        6        (MALF CODE 61)
+        7        MALF CODE 60   CRUISE TRANSMISSION OT IN DRIVE
+    10          BARO PRESSURE                   KPA = N * .165 + 61
+    11          MANIFOLD AIR TEMPERATURE        DEGREES C = N * .75 - 40
+    12          COOLANT TEMPERATURE             DEGREES C = N * .75 - 40
+    13          O2 CROSS COUNTS
+    14          OXYGEN SENSOR VOLTAGE           VOLTS = N * .0392
+    15          DISCRETES
+        0         NOT USED
+        1         LOOP STATUS                   1 = CLOSED      0 = OPEN
+        2         NOT USED
+        3         4TH GEAR SWITCH               1 = IN 4TH GEAR
+        4         NOT USED
+        5         NOT USED
+        6         NOT USED
+        7         NOT USED
+    16          DISCRETES
+        0         NOT USED
+        1         NOT USED
+        2         NOT USED
+        3         NOT USED
+        4         0 = AIR @ CONV        1 = AIR @ PORT
+        5         1 = AIR @ CONV/HEADS  1 = AIR @ THERMAC
+        6         NOT USED
+        7         NOT USED
+    17          DISCRETES
+        0         NOT USED
+        1         NOT USED
+        2         NOT USED
+        3         CANISTER PURGE        0 = PURGE ON
+        4         NOT USED
+        5         A/C CLUTCH            1 = CLUTCH ON
+        6         RESET MPG             0 = MPG RESET
+        7         METRIC/ENGLISH        1 = ENGLISH     0 = METRIC
+
+
+    18          DISCRETES
+        0         NOT USED
+        1         NOT USED
+        2         S/NOW
+        3         C/C ENGAGE            1 = ENGAGED
+        4         S/SOON
+        5         S/ELEC
+        6         COOLANT OTERMP
+        7         NOT USED
+    19          DISCRETES
+        0         THROTTLE SWITCH       1 = CLOSED      0 = OPEN
+        1         C/C RESUME            0 = REQUESTED
+        2         NOT USED
+        3         BRAKE REQUESTED       1 = BRAKE ON
+        4         C/C IP SW             1 = REQUESTED
+        5         PARK/NEUTRAL          1 = DRIVE       0 = P/N
+        6         C/C SET               0 = REQUESTED
+        7         REVERSE DISCRETE      1 = REVERSE
+    20          BATTERY VOLTAGE                         VOLTS = N * .1
+    21          DISCRETES
+        0         NOT USED
+        1         ISC RETRACT           1 = EXTEND      0 = RETRACT
+        2         IGNITION              1 = IGNITION ON
+        3         NOT USED
+        4         NOT USED
+        5         MPG REQUEST           0 = REQUESTED
+        6         CRANK                 1 = CRANKING
+        7         NOT USED
+    22          CLOSED LOOP INTEGRATOR
+    23          MANIFOLD ABSOLUTE PRESSURE              KPA = N * .324 + 20.4
+    24          THROTTLE POSITION SENSOR                DEGREES = N*.39 - 9.77
+    25          ENGINE SPEED                            RPM = N * 25
+    26          VEHICLE SPEED                           MPH = N
+    27          PULSE WIDTH (MSB)
+    28          PULSE WIDTH (LSB)             MS = (MSB*256 + LSB) * .01526
+
+
+..HEAD04L ALDL SHORT LIST  
+    01          COOLANT TEMPERATURE             DEGREES C = N * .75 - 40
+    02          O2 CROSS COUNTS
+    03          OXYGEN SENSOR VOLTAGE           VOLTS = N * .0392
+    04          DISCRETES
+        0         NOT USED
+        1         LOOP STATUS                   1 = CLOSED      0 = OPEN
+        2         NOT USED
+        3         4TH GEAR SWITCH               1 = IN 4TH GEAR
+        4         NOT USED
+        5         NOT USED
+        6         NOT USED
+        7         NOT USED
+    05          DISCRETES
+        0         NOT USED
+        1         NOT USED
+        2         NOT USED
+        3         NOT USED
+        4         0 = AIR @ CONV        1 = AIR @ PORT
+        5         1 = AIR @ CONV/HEADS  1 = AIR @ THERMAC
+        6         NOT USED
+        7         NOT USED
+    06          DISCRETES
+        0         NOT USED
+        1         NOT USED
+        2         NOT USED
+        3         CANISTER PURGE        0 = PURGE ON
+        4         NOT USED
+        5         A/C CLUTCH            0 = CLUTCH ON
+        6         RESET MPG             0 = MPG RESET
+        7         METRIC/ENGLISH        1 = ENGLISH     0 = METRIC
+    07          DISCRETES
+        0         NOT USED
+        1         NOT USED
+        2         S/NOW
+        3         C/C ENGAGE            1 = ENGAGED
+        4         S/SOON
+        5         S/ELEC
+        6         COOLANT OTEMP
+        7         NOT USED
+    08          DISCRETES
+        0         THROTTLE SWITCH       1 = CLOSED      0 = OPEN
+        1         C/C RESUME            0 = REQUESTED
+        2         NOT USED
+        3         BRAKE REQUESTED       1 = BRAKE ON
+        4         C/C IP SW             1 = REQUESTED
+        5         PARK/NEUTRAL          1 = DRIVE       0 = P/N
+        6         C/C SET               0 = REQUESTED
+        7         REVERSE DISCRETE      1 = REVERSE
+    09          BATTERY VOLTAGE                         VOLTS = N * .1
+
+
+    10          DISCRETES
+        0         NOT USED
+        1         ISC RETRACT           1 = EXTEND      0 = RETRACT
+        2         IGNITION              1 = IGNITION ON
+        3         NOT USED
+        4         NOT USED
+        5         MPG REQUEST           0 = REQUESTED
+        6         CRANK                 1 = CRANKING
+        7         NOT USED
+    11          CLOSED LOOP INTEGRATOR
+    12          MANIFOLD ABSOLUTE PRESSURE              KPA = N * .324 + 20.4
+    13          THROTTLE POSITION SENSOR                DEGREES = N*.39 - 9.77
+    14          ENGINE SPEED                            RPM = N * 25
+    15          VEHICLE SPEED                           MPH = N
+    16          PULSE WIDTH (MSB)
+    17          PULSE WIDTH (LSB)             MS = (MSB*256 + LSB) * .01526
+
+
+
+
+
+

@@ -1,0 +1,229 @@
+
+                        DATA STREAM A16   SPECIFICATION
+       ENGINE   USAGE:
+              1.8l MFI TURBO PONTIAC - (LA5) - (J) - 86
+
+
+       DATA PIN  : READ DATA ON PIN "E" OF ALDL CONNECTOR
+
+       BAUD RATE : 160 BAUD
+
+       MODES     : DIAGNOSTIC ENABLE:
+                     MODULATED . . . . NO
+                     10K . . . . . . . YES - 25 WORDS
+                     NORMAL  . . . . . YES - 25 WORDS
+                     SHORTED . . . . . YES - 25 WORDS
+
+       DEFINITION: ALL DATA STREAMS CONTAIN THE SAME INFORMATION
+                   IN THE SAME FORMAT
+
+
+
+
+
+  DATA STREAM DEFINITION
+  ----------------------
+    WORD  BIT   DESCRIPTION
+    1           MODE WORD 2
+            0   ROAD SPEED PULSE OCCURRED                1 = PULSE OCCURRED
+            1   ESC FAILURE
+            2   REFERENCE PULSE OCCURRED                 1 = PULSE OCCURRED
+            3   DIAGNOSTIC SWITCH IN FACTORY TEST        1 = 3.9K MODE
+            4   DIAGNOSTIC SWITCH IN DIAGNOSTIC POSITION 1 = SHORTED MODE
+            5   DIAGNOSTIC SWITCH IN ALDL POSITION       1 = 10K MODE
+            6   HIGH BATTERY VOLTAGE                     1 = HIGH VOLTAGE
+            7   OLD BLM CELL FLAG (AIR/FUEL)
+    2           FIRST PROM ID WORD
+    3           SECOND PROM ID WORD
+    4           IAC PRESENT MOTOR POSITION
+    5           COOLANT TEMPERATURE   A/D COUNTS
+    6           FILTERED MPH VARIABLE - VEHICLE SPEED
+    7           MANIFOLD ABSOLUTE PRESSURE
+    8           ENGINE SPEED
+    9           THROTTLE POSITION  SENSOR
+   10           INTEGRATOR
+   11           OXYGEN SENSOR
+   12           MALFUNCTION FLAG WORD 1
+            0   C24 VEHICLE SPEED SENSOR
+            1   C23 MANIFOLD AIR TEMPERATURE LOW
+            2   C22 THROTTLE POSITION SENSOR LOW
+            3   C21 THROTTLE POSITION SENSOR HIGH
+            4   C15 COOLANT SENSOR LOW TEMPERATURE
+            5   C14 COOLANT SENSOR HIGH TEMPERATURE
+            6   C13 OXYGEN SENSOR OPEN
+            7   C12 NO REFERENCE PULSES (ENG. NOT RUNNING)
+   13           MALFUNCTION FLAG WORD 2
+            0   C42 EST MONITOR ERROR
+            1   C41 NOT USED
+            2   C35 IAC ERROR
+            3   C34 MAP SENSOR LOW
+            4   C33 MAP SENSOR HIGH
+            5   C32 NOT USED
+            6   C31 WASTEGARE HIGH MAP OVERBOOST
+            7   C25 MANIFOLD AIR TEMPERATURE LOW
+   14           MALFUNCTION FLAG WORD 3
+            0       ADU ERROR
+            1       NOT USED
+            2       NOT USED
+            3   C52 CALPACK MISSING
+            4   C51 PROM ERROR
+            5   C45 OXYGEN SENSOR RICH
+            6   C44 OXYGEN SENSOR LEAN
+            7   C43 ELECTRONIC SPARK CONTROL FAILURE
+
+
+
+
+  DATA STREAM DEFINITION (CONT.)
+  ------------------------------
+
+
+    WORD  BIT   DESCRIPTION
+   15           AIR-FUEL (A/F) MODE WORD
+            0   NOT USED
+            1   LEARN CONTROL ENABLE FLAG   1 = ENABLE
+            2   LOW BATTERY VOLTAGE         1 = LOW BATTERY
+            3   QUASI-ASYNC TRANSITION FLAG
+            4   ASYNCHRONOUS PULSE FLAG     1 = ASYNCHRONOUS
+            5   FIRST TIME CLOSED LOOP FLAG 1 = FIRST TIME
+            6   RICH LEAN FLAG              1 = RICH          0 = LEAN
+            7   CLOSED LOOP FLAG            1 = CLOSED LOOP   0 = OPEN
+   16           MANIFOLD AIR TEMPERATURE
+   17           MCU  INPUT/OUTPUT STATUS WORD / IO STATUS WORD 1
+            0   A/C CLUTCH                  1 = CLUTCH ON
+            1   NOT USED
+            2   FAN                         1 = SOLENOID/FAN ON
+            3   TORQUE CONVERTOR CLUTCH     1 = CONV. LOCKED, SOLENOID ON
+            4   PARK/NEUTRAL                1 = IN PARK/NEUTRAL
+            5   WASTEGATE BYPASS CONTROL    1 = BYPASS
+            6   POWER STEERING EXCESSIVE
+            7   AIR CONDITIONING            1 = A/C OFF
+   18           BATTERY VOLTAGE
+   19           BLOCK LEARN MULTIPLIER
+   20           ALDL RICH LEAN CHANGE COUNTER / TOTAL CROSSOVER COUNTS
+   21           SPARK ADVANCE PULSE
+   22           WASTEGATE DUTY CYCLE
+   23           OLDPA3
+   24           BASE PULSE WIDTH BYTE #1
+   25           BASE PULSE WIDTH BYTE #2
+
+
+
+
+
+
+        CONVERSION FOR A/D COUNTS TO ENGINEERING UNITS
+        ----------------------------------------------
+
+                N = A/D COUNTS
+               EU = ENGINEERING UNITS
+
+                EU = N*A + B
+                EU =
+                EU = N
+                EU = TABLE LOOKUP
+
+
+
+
+
+                                                         ENGINEERING
+    WORD   DESCRIPTION                     CONVERSION      UNIT
+    1      MODE WORD 2                     NONE
+    2      FIRST PROM ID WORD              NONE
+    3      SECOND PROM ID WORD             NONE
+    4      IAC                             NONE
+    5      COOLANT TEMPERATURE             SEE TABLES       DEGREES C
+    6      VEHICLE SPEED                   NONE
+    7      MANIFOLD ABSOLUTE PRESSURE      EU = N*.0196     VOLTS
+    8      RPM                             EU = N*25        RPM
+    9      THROTTLE POSITION               EU = N*.0196     VOLTS
+   10      INTEGRATOR                      NONE
+   11      OXYGEN SENSOR                   EU = N*4.44      MILLIVOLTS
+   12      MALF FLAG WORD 1                NONE
+   13      MALF FLAG WORD 2                NONE
+   14      MALF FLAG WORD 3                NONE
+   15      FUEL-AIR MODE WORD              NONE
+   16      MANIFOLD AIR TEMPERATURE        TABLE LOOKUP
+   17      MCU INPUT/OUTPUT STATUS WORD    NONE
+   18      BATTERY VOLTAGE                 EU = N*.1       VOLTS
+   19      BLOCK LEARN MULTIPLIER          NONE
+   20      ALDL RICH LEAN CHANGE COUNTER   SEE **
+   21      SPARK ADVANCE PULSE             EU = N*(2.844)  DEGREES
+   22      WASTEGATE DUTY CYCLE            NONE            %
+   23      OLDPA3                          NONE
+   24      BASE PULSE WIDTH BYTE #1
+   25      BASE PULSE WIDTH BYTE #2        EU =(BYTE1*256+BYTE2)*.0153 *** MS
+
+
+
+ ** : THIS IS A ROLLOVER COUNTER (0 - 255), TAKE CURRENT DATA STREAM READING
+      SUBTRACT LAST DATA STREAM READING = CROSSCOUNTS.  IF CURRENT READING
+      MINUS LAST READING IS < 0, THEN TAKE CURRENT READING + 255 - LAST
+      READING = CROSSCOUNTS.
+
+ ***: THIS READING SHOULD BE THE DIFFERENCE BETWEEN THE LAST TWO READINGS.
+      TAKE CURRENT DATA STREAM READING SUBTRACT LAST DATA STREAM READING FOR
+      ACTUAL MS VALUE.  FOR FIRST DATA STREAM, THAT READING IS THE MS VALUE.
+
+        AIR TEMPERATURE SENSOR TABLE
+
+        DEGREES C               A/D COUNTS
+        ------------            -----------
+          -40                      255
+          -30                      251
+          -25                      250
+          -20                      247
+          -15                      241
+          -10                      237
+          - 5                      231
+            0                      225
+            5                      218
+           10                      209
+           15                      199
+           20                      189
+           25                      177
+           30                      165
+           35                      152
+           40                      139
+           45                      126
+           50                      114
+           55                      102
+           60                       92
+           65                       81
+           70                       72
+           75                       64
+           80                       56
+           85                       50
+           90                       44
+           95                       39
+          100                       34
+          105                       30
+          110                       26
+          115                       23
+          120                       18
+          125                       16
+          130                       14
+          135                       12
+          140                       11
+          145                       10
+          150                        9
+          155                        8
+          160                        7
+          165                        6
+          170                        5
+          175                        4
+          180                        3
+          185                        2
+          190                        1
+          195                        0
+          200                        0
+          255                        0
+
+
+LAYOUT 000
+:  \B 
+  
+        <   ?   A   ú \---+----+----+----+---------+---------+---------+---------+--@-/----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                       \B
+ <

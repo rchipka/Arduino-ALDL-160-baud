@@ -1,0 +1,501 @@
+
+                        DATA STREAM A52   SPECIFICATION
+
+       ENGINE  USAGES:  4.5L DFI - LR6 - 88,89 CADILLAC "C" CAR ONLY
+
+
+                         1988 CADILLAC "C"
+                 ALDL MODING AND DATA INFORMATION
+
+     Purpose:   The purpose of this document is to provide a
+       definition of the ALDL moding and data list for the 1988
+       Cadillac "C" (DEVILLE/FLEETWOOD) vehicles equipped with the 4.5L
+       V-8 Digital Fuel Injected engine.
+
+     Organization:   A complete ALDL listing (BCM data list, ECM
+       long data list and ECM Short data list) is provided first.
+       Following the listing is documentation concerning the ALDL
+       initiation mechanization and mode availability.  ALDL mode
+       initiation mechanization is identical to 1985 - 1987 Cadillac "C"
+       vehicles equipped with the 4.1L V-8 Digital Fuel Injected engine.
+
+..HEAD01C CADILLAC 1988 C-CAR ALDL LISTING
+..HEAD02L BCM DATA LIST 
+..HEAD03L NUMBER OF DATA WORDS - 21
+..HEAD04L ALDL MODE 3 
+..HEAD05L WORD  BIT   DESCRIPTION
+..page
+
+  1          STATUS WORD
+         7    DIAGNOSTICS ACTIVE            1=ACTIVE
+         6    HOLD DIAGNOSTICS              1=HOLD
+         5    CLEAR DIAGNOSTICS             1=CLEAR
+         4    ECON KEY STATUS               1=ACTIVE
+         3    LO KEY STATUS                 1=ACTIVE
+         2    CODE 52 ACKNOWLEDGEMENT       1=ACKNOWLEDGED
+         1    HI KEY STATUS                 1=ACTIVE
+         0    COOLANT FAN FAILURE           1=FAN FAILED
+  2          STATUS WORD
+         7    WARMER KEY STATUS             1=ACTIVE
+         6    COOLER KEY STATUS             1=ACTIVE
+         5    NOT USED
+         4    HIGH COOLANT FAN              1=FAN ON HIGH
+         3    HIGH BLOWER                   1=BLOWER ON HIGH
+         2    A/C POSSIBLE                  1=CLUTCH POSSIBLE
+         1    A/C CLUTCH STATUS             1=CLUTCH ENERGIZED
+         0    REAR DEFOGGER                 1=RR DEF ENERGIZED
+  3          OUTSIDE AIR TEMP, FILTERED     DEG F = N-40
+                                            DEG C = .55*(N-40) + 32
+  4          A/C HIGH SIDE TEMP             DEG C = N-40
+  5          MALF CODES                     Bit value 1 = Malf.
+         7    MALF FLAG F10     OUTSIDE AIR TEMPERATURE CIRCUIT PROBLEM
+         6    MALF FLAG F11     A/C HIGH SIDE TEMPERATURE CIRCUIT PROBLEM
+         5    MALF FLAG F12     A/C LOW SIDE TEMPERATURE CIRCUIT PROBLEM
+         4    MALF FLAG F13     IN-CAR TEMPERATURE CIRCUIT PROBLEM
+         3    MALF FLAG F14
+         2    MALF FLAG F30     CCP TO BCM DATA PROBLEM
+         1    MALF FLAG F31     FDC TO BCM DATA PROBLEM
+         0    MALF FLAG F32     ECM TO BCM DATA PROBLEM
+  6          MALF CODES
+         7    MALF FLAG F40 HISTORY AIR MIX DOOR PROBLEM
+         6    MALF FLAG F41 HISTORY HEATED WINDSHIELD FAILURE
+         5      NOT USED
+         4    MALF FLAG F46 HISTORY LOW A/C REFRIGERANT CONDITION WARNING
+         3    MALF FLAG F47 HISTORY VERY LOW A/C REFRIGERANT CONDITION WARNING
+         2    MALF FLAG F48 HISTORY VERY LOW A/C REFRIGERANT PRESSURE CONDITION
+         1    MALF FLAG F49 HISTORY HIGHT TEMPERATURE CLUTCH DISENGAGE
+         0    MALF FLAG F51 HISTORY BCM PROM ERROR
+  7          STATUS WORD
+         7    RANGE KEY STATUS              1=ACTIVE
+         6    INSTANT MPG KEY STATUS        1=ACTIVE
+         5    AVE MPG KEY STATUS            1=ACTIVE
+         4    FUEL USED KEY STATUS          1=ACTIVE
+         3    RESET KEY STATUS              1=ACTIVE
+         2    NOT USED
+         1    NOT USED      
+         0    NOT USED        
+..PAGE
+   8          STATUS WORD 7    COOLER KEY STATUS 1=ACTIVE
+         6    WARMER KEY STATUS             1=ACTIVE
+         5    OUTSIDE TEMP KEY STATUS       1=ACTIVE
+         4    OFF KEY STATUS                1=ACTIVE
+         3    ECON KEY STATUS               1=ACTIVE
+         2    AUTO KEY STATUS               1=ACTIVE
+         1    FRONT DEFROST KEY STATUS      1=ACTIVE
+         0    REAR DEFOG KEY STATUS         1=ACTIVE
+  9          STATUS WORD
+         7    A/C CLUTCH OUTPUT STATUS      1=CLUTCH ON
+         6    REAR DEFOG OUTPUT STATUS      1=RR DEF ON
+         5    WATER VALVE OUTPUT STATUS     1=ON - NO WATER FLOW
+         4    RECIRC DOOR OUTPUT STATUS     1=ON - RECIRC AIR
+         3    DEFROST DOOR OUTPUT STATUS    1=ON - A/C VENTS
+         2    UP/DOWN DOOR OUTPUT STATUS    1=ON - UP (A/C,DEF)
+         1    MIX DOOR DIRECTION            1=REV,0=FOR
+         0    MIX DOOR DRIVE STATUS         1=DRIVE OFF
+  10         FUEL LEVEL REF VOLTAGE (V)    VOLTS=N*.0639
+  11         FUEL LEVEL SENSOR             SEE TABLE 2
+  12         A/C LO SIDE TEMPERATURE       SEE TABLE 3
+  13         IN CAR TEMPERATURE            SEE TABLE 4
+  14         AIR MIX DOOR POSITION         SEE TABLE 5
+  15         DIM POT (%)                   %=(V15/V16)*100
+  16         PARK LAMP REFERENCE (V)       V=N*.0639
+  17         OUTSIDE AIR TEMP, UNFILTERED  SEE TABLE 3
+  18         STATUS WORD
+         7    TWILIGHT SENTINL ENABLE INPUT 1=ENABLED
+         6    DOOR JAMB SWITCH STATUS       1=DOOR OPEN
+         5    PHOTO CELL INPUT              N/A
+         4    METRIC/ENGLISH DISPLAY        1=METRIC
+         3    NOT USED
+         2    HVAC LOW PRESSURE STATUS      1=LOW PRESSURE
+         1    WAIT TO START STATUS          1=WAIT
+         0    WATER IN FUEL STATUS          1=WATER IN FUEL
+  19         BCM PROM WORD 1
+  20         BCM PROM WORD 2
+  21         CURRENT ALDL MODE STATUS
+
+
+
+
+
+
+
+
+
+
+                              TABLE 2
+        FUEL LEVEL REFERENCE TABLE - SENDER RATIO vs. GALLONS
+
+    Calculate word 11 voltage by V=N*.0639 and then calculate the
+fuel sender ratio by V11/V10=RATIO. Use ratio for table lookup.
+
+                  RATIO          FUEL LEVEL
+                                  (GALS)
+                 .0000             0.8
+                 .0625             1.4
+                 .1250             2.0
+                 .1875             2.9
+                 .2500             4.1
+                 .3125             5.4
+                 .3750             6.9
+                 .4375             8.9
+                 .5000            11.3
+                 .5625            13.2
+                 .6250            14.8
+                 .6875            16.0
+                 .7500            16.7
+                 .8125            17.2
+                 .8750            17.6
+                 .9375            17.9
+                1.0000            18.1
+
+
+
+
+                                    TABLE 3
+                                REFERENCE TABLE
+                        LO SIDE AND OUTSIDE TEMPERATURE
+
+                   TO FIGURE DEG C, TAKE [(DEG F) - 32]/1.8
+
+                       COUNTS   TEMP
+                                (DEG F)
+
+                         0      239
+                        16      170
+                        32      133
+                        48      110
+                        64       94
+                        80       81
+                        96       70
+                       112       60
+                       128       50
+                       144       41
+                       160       32
+                       176       22
+                       192       12
+                       208        0
+                       224      -14
+                       240      -36
+                       256      -40
+
+
+
+
+
+
+
+                         TABLE 4
+                     REFERENCE TABLE
+                   IN CAR TEMPERATURE
+
+                TO FIGURE DEG C, TAKE [(DEG F) - 32]/1.8
+
+                      COUNTS   TEMP (F)
+
+                         0      215
+                        16      201
+                        32      165
+                        48      142
+                        64      124
+                        80      110
+                        96       98
+                       112       87
+                       128       77
+                       144       67
+                       160       57
+                       176       47
+                       192       36
+                       208       24
+                       224        8
+                       240      -16
+                       256      -40
+
+
+
+
+                 TABLE 5
+         AIR MIX DOOR POSITION
+          COUNTS vs. DEGREES
+
+             COUNTS   DOOR POS
+                       (DEG)
+
+               0       90
+               3       70
+               4       63
+              26       59
+              34       56
+              42       53
+              50       50
+              59       47
+              69       43
+              77       40
+              79       36
+             104        29
+             113        26
+             124        22
+             131        19
+             141        16
+             152        12
+             162         9
+             173         5
+             182         4
+             191         3
+             220         2
+             255         0
+
+
+
+                    TABLE 6
+                REFERENCE TABLE
+             A/C HIGH SIDE TEMP
+
+          COUNTS   TEMP (C)
+
+             0      215
+            16      175
+            32      148
+            48      128
+            64      115
+            80      104
+            96       95
+           112       86
+           128       81
+           144       73
+           160       65
+           176       57
+           192       49
+           208       39
+           224       28
+           240       12
+           256      -15
+
+..HEAD01C CADILLAC 1988 C-CAR ALDL LISTING
+..HEAD02L ALDL ECM DATA LIST 
+..HEAD03L NUMBER OF DATA WORDS - 33
+..HEAD04L ALDL MODE 1 
+..HEAD05L WORD  BIT   DESCRIPTION
+
+
+
+  1          ECM PROM ID WORD 1
+  2          ECM PROM ID WORD 2
+  3          MALF CODES
+         7    MALF CODE E12 CURRENT NO DISTRIBUTOR SIGNAL
+         6    MALF CODE E13 CURRENT OXYGEN SENSOR NOT READY
+         5    MALF CODE E14 CURRENT SHORTED COOLANT SENSOR CIRCUIT
+         4    MALF CODE E15 CURRENT OPEN COOLANT SENSOR CIRCUIT
+         3    MALF CODE E16 CURRENT GENERATOR VOLTAGE OUT OF RANGE
+         2      NOT USED
+         1    MALF CODE E18 CURRENT OPEN CRANK SIGNAL CIRCUIT
+         0    MALF CODE E19 CURRENT SHORTED FUEL PUMP CIRCUIT
+  4          MALF CODES
+         7    MALF CODE E20 CURRENT OPEN FUEL PUMP CIRCUIT
+         6    MALF CODE E21 CURRENT SHORTED THROTTLE POSITION SENSOR CIRCUIT
+         5    MALF CODE E22 CURRENT OPEN THROTTLE POSITION SENSOR CIRCUIT
+         4    MALF CODE E23 CURRENT EST/BYPASS CIRCUIT PROBLEM
+         3    MALF CODE E24 CURRENT SPEED SENSOR CIRCUIT PROBLEM
+         2      NOT USED
+         1    MALF CODE E26 CURRENT SHORTED THORTTLE SWITCH CIRCUIT
+         0    MALF CODE E27 CURRENT OPEN THROTTLE SWITCH CIRCUIT
+  5          MALF CODES
+         7    MALF CODE E28 CURRENT OPEN THIRD OR FOURTH GEAR CIRCUIT
+         6      NOT USED
+         5    MALF CODE E30 CURRENT RPM ERROR TOO GREAT
+         4    MALF CODE E31 CURRENT SHORTED MAP SENSOR CIRCUIT
+         3    MALF CODE E32 CURRENT OPEN MAP SENSOR CIRCUIT
+         2      NOT USED
+         1    MALF CODE E34 CURRENT MAP SENSOR SIGNAL TOO HIGH
+         0      NOT USED
+  6          MALF CODES
+         7      NOT USED
+         6    MALF CODE E37 CURRENT SHORTED MAT SENSOR CIRCUIT
+         5    MALF CODE E38 CURRENT OPEN MAT SENSOR CIRCUIT
+         4    MALF CODE E39 CURRENT VCC ENGAGEMENT PROBLEM
+         3    MALF CODE E40 CURRENT OPEN POWER STEERING PRESSURE SWITCH CIRCUIT
+         2      NOT USED
+         1      NOT USED
+         0      NOT USED
+  7          MALF CODES
+         7    MALF CODE E44 CURRENT LEAN EXHAUST SIGNAL
+         6    MALF CODE E45 CURRENT RICH EXHAUST SIGNAL
+         5      NOT USED
+         4    MALF CODE E47 CURRENT BCM TO ECM DATA PROBLEM
+         3    MALF CODE E48 CURRENT EGR SYSTESM FAULT
+         2      NOT USED
+         1      NOT USED
+         0      NOT USED
+
+
+   8         MALF CODES
+         7    MALF CODE E52 HISTORY ECM MEMORY RESET INDICATOR
+         6    MALF CODE E53 HISTORY DISTRIBUTOR SIGNAL INTERRUPT
+         5      NOT USED
+         4    MALF CODE E55 HISTORY TPS MISADJUSTED
+         3      NOT USED
+         2      NOT USED
+         1    MALF CODE E58 HISTORY
+         0    MALF CODE E59 HISTORY VCC TEMPERATURE SENSOR CIRCUIT PROBLEM
+   9         MALF CODES
+         7    MALF CODE E60 HISTORY CRUISE-TRANSMISSION NOT IN DRIVE
+         6      NOT USED
+         5    MALF CODE E62 HISTORY
+         4    MALF CODE E63 HISTORY CRUISE-CAR SPEED AND SET SPEED DIFF TOO HI
+         3    MALF CODE E64 HISTORY CRUISE-CAR ACCELERATION TOO HIGH
+         2    MALF CODE E65 HISTORY CRUISE-COOLANT TEMPERATURE TOO HIGH
+         1    MALF CODE E66 HISTORY CRUISE-ENGIEN RPM TOO HIGH
+         0    MALF CODE E67 HISTORY CRUISE-CRUISE SWITCH SHORTED DURING ENABLE
+  10         MANIFOLD AIR TEMP.  DEGREES C=(N*.75) -40
+  11         TRANS TEMP/VCC TEMP           DEGREES C=N - 40
+  12         SPARK ADVANCE                 DEG=N*.35
+  13         BAROMETRIC PRESSURE           Kpa=(N*.16) + 61
+  14         BLOCK LEARN MULTIPLIER (Cnts) COUNTS
+  15         EGR DUTY CYCLE                %=N*.39
+  16         IGNITION CYCLE COUNTER        COUNTS
+  17         COOLANT TEMP.                 DEGREES C=(N*.75) - 40
+  18         O2 SENSOR CROSS COUNTS        COUNTS
+  19         O2 SENSOR VOLTAGE             mV=N*4.448
+  20         BATTERY VOLTAGE               V=N*.1
+  21         MAP                           Kpa=(N*.323) + 20.4
+  22         CLOSED LOOP INTEGRATOR        COUNTS
+  23         TPS                           DEG=N*.39-10
+  24         ENGINE RPM                    RPM=N*25
+  25         VEHICLE SPEED                 MPH=COUNTS
+  26         INJECTOR PULSE WIDTH WORD 1
+  27         INJECTOR PULSE WIDTH WORD 2   PW=N26*3.0966 + N27*.01526
+  28         STATUS WORD
+         7    FOURTH GEAR STATUS            1=FOURTH GEAR
+         6    CLOSED LOOP STATUS            1=CLOSED LOOP
+         5    P/N STATUS                    1=P/N
+         4    AIR DIVERT STATUS             1=ENERGIZED
+         3    AIR SWITCH STATUS             1=ENERGIZED
+         2    BRAKE SWITCH STATUS           1=CLOSED (APPLIED)
+         1    THROTTLE SWITCH STATUS        1=CLOSED
+         0    CRANK STATUS                  1=CRANK
+  29         STATUS WORD
+         7    THIRD GEAR STATUS             1=THIRD GEAR
+         6    VCC STATUS                    1=ENERGIZED
+         5    ISC DIRECTION STATUS          1=FORWARD
+         4    NOT USED
+         3    POWER STEERING STATUS         1=P.S. LOAD
+         2    ISC REVERSE PREVENT           1=PREVENT
+         1    RICH/LEAN STATUS              1=RICH
+         0    A/C RELAY STATUS              1=ENERGIZED
+
+
+  30         STATUS WORD
+         7    CRUISE CONTROL ENABLE         1=ENABLED
+         6    C/C SET/COAST                 1=SET/COAST
+         5    C/C RESUME/ACCEL              1=RESUME/ACCEL
+         4    C/C ON/OFF                    1=ON
+         3    C/C ENGAGE LAMP               1=ON
+         2    C/C VENT                      1=ENERGIZED
+         1    C/C VACUUM                    1=ENERGIZED
+         0    E-CELL                        1=EXPIRED
+  31         CRUISE CONTROL SET SPEED      MPH=COUNTS
+  32         ECM ALDL MODE WORD
+  33         NOT USED
+
+
+..HEAD01C CADILLAC 1988 C-CAR ALDL LISTING
+..HEAD02L ALDL ECM SHORT DATA LIST 
+..HEAD03L NUMBER OF DATA WORDS - 17
+..HEAD05L WORD  BIT   DESCRIPTION
+
+   1         COOLANT TEMP.                 DEGREES C=(N*.75) - 40
+   2         O2 SENSOR CROSS COUNTS        COUNTS
+   3         O2 SENSOR VOLTAGE             mV=N*4.448
+   4         BATTERY VOLTAGE               V=N*.1
+   5         MAP                           Kpa=(N*.32) + 20
+   6         CLOSED LOOP INTEGRATOR        COUNTS
+   7         TPS                           DEG=N*.32
+   8         ENGINE RPM                    RPM=N*25
+   9         VEHICLE SPEED                 MPH=COUNTS
+  10         INJECTOR PULSE WIDTH WORD 1
+  11         INJECTOR PULSE WIDTH WORD 2   PW=N26*3.0966 + N27*.01526
+  12         STATUS WORD
+         7    FOURTH GEAR STATUS            1=FOURTH GEAR
+         6    CLOSED LOOP STATUS            1=CLOSED LOOP
+         5    P/N STATUS                    1=P/N
+         4    AIR DIVERT STATUS             1=ENERGIZED
+         3    AIR SWITCH STATUS             1=ENERGIZED
+         2    BRAKE SWITCH STATUS           1=CLOSED (APPLIED)
+         1    THROTTLE SWITCH STATUS        1=CLOSED
+         0    CRANK STATUS                  1=CRANK
+  13         STATUS WORD
+         7    THIRD GEAR STATUS             1=THIRD GEAR
+         6    VCC STATUS                    1=ENERGIZED
+         5    ISC DIRECTION STATUS          1=FORWARD
+         4    NOT USED
+         3    POWER STEERING STATUS         1=P.S. LOAD
+         2    ISC REVERSE PREVENT           1=PREVENT
+         1    RICH/LEAN STATUS              1=RICH
+         0    A/C RELAY STATUS              1=ENERGIZED
+  14         STATUS WORD
+         7    CRUISE CONTROL ENABLE         1=ENABLED
+         6    C/C SET/COAST                 1=SET/COAST
+         5    C/C RESUME/ACCEL              1=RESUME/ACCEL
+         4    C/C ON/OFF                    1=ON
+         3    C/C ENGAGE LAMP               1=ON
+         2    C/C VENT                      1=ENERGIZED
+         1    C/C VACUUM                    1=ENERGIZED
+         0    E=CELL                        1=EXPIRED
+  15         CRUISE CONTROL SET SPEED      MPH=COUNTS
+  16         ECM ALDL MODE WORD
+  17         NOT USED
+..HEAD01C CADILLAC 1988 C-CAR ALDL LISTING
+..HEAD02L
+..HEAD03L
+..HEAD04L
+..HEAD05L
+
+
+                ALDL MECHANIZATION AND MODING
+
+    1988 Cadillac "C" vehicle ALDL initiation mechanization is
+    identical to ALDL initiation mechanization of 1985 - 1987
+    Cadillac "C" vehicles equipped with the 4.1L V-8 Digital Fuel
+    Injected engine.  ALDL moding of the 1988 Cadillac "C" vehicles
+    has changed, relative to previous model years.  A summary of ALDL
+    modes is given below in TABLE 8.
+
+
+               ALDL MECHANIZATION AND MODING SUMMARY
+
+    All ALDL data transmissions on these vehicles occurs on pin E
+    of the ALDL connector.  The signal output is 12V at 160 baud with
+    a 12V level specifying a logic 0 and a ground level specifying a
+    logic 1.
+
+    ALDL moding is initiated by applying a timed (pulse width
+    modulated) ground signal to pin B of the ALDL connector.  The
+    available modes are selected by varying the pin B ground time
+    from 0 to 500 msec on a continuously repeating 500 msec cycle.
+    Refer to TABLE 8, below, for a summary of available ALDL modes.
+
+    All ALDL message transmissions follow a standardized format.
+    First, each data list is preceded by a sychronization word which
+    consists of nine logic 1's.  Second, each word which is not a
+    sychronization word is preceded by a logic 0 synchronization bit.
+    There is no time delay between subsequent words but there may be
+    a time delay between subsequent data lists.  The data is trans
+    mitted most significant bit first.
+
+
+
+
+                              TABLE 8 
+                   1988 CADILLAC C-CAR ALDL MODES  
+
+                                                    PIN B
+    MODE #          DESCRIPTION                 GROUND TIME/500ms
+CYCLE
+    0        STOP OR NULL MODE                   0.0 -  25.0 ms
+    1        ECM LONG DATA LIST                 25.1 -  62.5 ms
+    3        BCM DATA LIST                     100.1 - 137.5 ms
+LAYOUT 000
+:ê  B 
+  
+Su¶    <_        ˙ \---+----+----+----+---------+---------+---------+---------+--@-/----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     STANDARD 2      B
+ <

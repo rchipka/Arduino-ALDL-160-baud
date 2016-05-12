@@ -1,0 +1,419 @@
+06/28/93 PUT DATA STREAM INFORMATION IN FILE.                           B.HENSON
+
+
+                        DATA STREAM A28   SPECIFICATION
+
+       ENGINE   USAGE:
+              5.0L PFI     CPC   - (LB9) - (F) - 87,88  (160 & 8192 baud)
+              5.0L PFI     CPC   - (LB9) - (F) - 86     (160 baud only)
+              5.7L PFI     CPC   - (L98) - (8) - 87,88  (160 & 8192 baud)
+              5.7L PFI     CPC   - (L98) - (8) - 85,86  (160 baud only)
+
+       DATA PIN  : READ DATA ON PIN "E" OF ALDL CONNECTOR
+
+       BAUD RATE : 8192
+
+       MODES     : DATA STREAM ATTACHED FOR ALDL MODE 1
+
+        THESE ENGINES USE A 'HYBRID' ECM, AND THE 8192 DATA
+        COMMUNICATIONS OCCUR ON ALDL PIN 'E'
+        Seial data shall be unidiectional fom the ECM to a connected
+        device at 160 baud when the ECM is not in the ALDL mode. When the
+        ECM is in the ALDL mode (10k), the ECM shall tansmit the nomal
+        25 paamete ALDL list at the 160 baud ate. The ECM shall then
+        be moded to listen fo a peiod of 50 ms fo an inbound message
+        fom an ALDL test device at an 8192 baud ate. If a valid message
+        is eceived, communications shall continue at an 8192 baud ate
+        until a powe down eset. Othewise, the ECM shall be moded fo
+        160 baud, tansmit the 25 paamete ALDL list and then listen fo
+        50 ms fo an 8192 baud inbound message.
+     ------------------------------------------------------------
+
+       DATA PIN  : READ DATA ON PIN "E" OF ALDL CONNECTOR
+
+       BAUD RATE : 160
+
+       MODES     :  10 K MODE OR SHORTED
+
+
+..HEAD02L ALDL DATA LIST
+..HEAD03L NUMBER OF DATA WORDS - 25
+..HEAD04L ALDL 160 BAUD: 10K AND SHORTED MODES
+..HEAD05L WORD  BIT   LOCATION
+
+    1           MODE WORD 2
+            0   OVERDRIVE ON                        1 = ON,  0 = OFF
+            1   MALF 14 OR 15 THIS STARTUP
+            2   REFERENCE PULSE OCCUREED
+            3   1 = IN ALDL MODE, 8192 LOCKED IN , AND MODE 4
+            4   DIAGNOSTIC SWITCH IN DIAGNOSTIC POSITION
+            5   DIAGNOSTIC SWITCH IN ALDL POSITION
+            6   HIGH BATTERY VOLTAGE
+            7   SHIFT LIGHT                         1 = ON,  0 = OFF
+    2           FIRST PROMID WORD                     PROMID = (MSB)*256+(LSB)
+    3           SECOND PROMID WORD
+    4           IAC PRESENT MOTOR POSITION            STEPS = N
+    5           COOLANT TEMPERATURE                   DEG C = N*192/256 - 40
+    6           MILES PER HOUR                        N = MPH
+    7           EGR DUTY CYCLE                        % DUTY CYCLE = N/2.56
+    8           ENGINE SPEED (RPM)                    RPM = N * 25
+    9           THROTTLE POSITION                     VOLTS = N * .0196
+    10          BASE PULSE CLOSED LOOP CORRECTION     N = COUNTS
+    11          OXYGEN SENSOR                         MILLIVOLTS = N*4.44
+    12          MALFUNCTION FLAG WORD 1
+            0   C23 MAT SENSOR LOW
+            1   C22 THROTTLE POSITION SENSOR LOW
+            2   C21 THROTTLE POSITION SENSOR HIGH
+            3   C16 NOT USED
+            4   C15 COOLANT SENSOR LOW TEMPERATURE
+            5   C14 COOLANT SENSOR HIGH TEMPERATURE
+            6   C13 OXYGEN SENSOR OPEN
+            7   C12 NO REFERENCE PULSES (ENG. NOT RUNNING)
+    13          MALFUNCTION FLAG WORD 2
+            0   C35 NOT USED
+            1   C34 MAF SENSOR LOW
+            2   C33 MAF SENSOR HIGH
+            3   C32 EGR DIAGNOSTIC
+            4   C31 NOT USED
+            5   C26 NOT USED
+            6   C25 MAT SENSOR HIGH
+            7   C24 VEHICLE SPEED SENSOR
+    14          MALFUNCTION FLAG WORD 3
+            0   C51 PROM ERROR
+            1   C46 VATS FAILED
+            2   C45 OXYGEN SENSOR RICH
+            3   C44 OXYGEN SENSOR LEAN
+            4   C43 ESC FAILURE
+            5   C42 EST MONITOR ERROR
+            6   C41 CYLINDER SELECT ERROR
+            7   C36 BURNOFF DIAGNOSTIC
+
+
+    15          MALF FLAG WORD 4
+            0   C63 NOT USED
+            1   C62 NOT USED
+            2   C61 NOT USED
+            3   C56 NOT USED
+            4   C54 ADU ERROR
+            5   C53 FUEL PUMP VOLTAGE
+            6   C52 OVER VOLTAGE
+            7   C51 CAL PACK MISSING
+    16          AIR/FUEL MODE WORD
+            0   NOT USED
+            1   LEARN CONTROL ENABLE FLAG               1 = ENABLE STORED
+            2   NOT USED
+            3   NOT USED
+            4   VEHICLE SPEED SENSOR FAILURE
+            5   EECC SLOW 02 RICH/LEAN FLAG
+            6   RICH - LEAN FLAG                        1 = RICH, 0 = LEAN
+            7   CLOSED LOOP FLAG                        1 = CLOSED LOOP
+    17          MANIFOLD AIR TEMPERATURE                SEE TABLE 1
+    18          MCU INPUT STATUS WORD
+            0   1 = IN PARK/NEUTRAL
+            1   1 = NOT IN THIRD GEAR
+            2   1 = OVERDRIVE REQUEST
+            3   NOT USED(POWER STEERING ON = 1)
+            4   1 = EGR DIAGNOSTIC SWITCH CLOSED
+            5   1 = TCC LOCKED
+            6   1 = FAN REQUEST BIT
+            7   0 = A/C REQUEST
+    19          OLDPA3 - ESC COUNTER INPUT              N = COUNTS
+    20          BLM                                     N = COUNTS
+    21          ALDL RICH LEAN CHANGE COUNTER / TOTAL CROSSOVER COUNTS **
+    22          AIR FLOW RATE (MSB)
+    23          AIR FLOW RATE (LSB)                    G/S = (MSB)*256+(LSB)
+    24          INJECTOR BASE PULSE WIDTH (MSB)
+    25          INJECTOR BASE PULSE WIDTH (LSB)        WIDTH=(MSB)*256 + (LSB)
+ ***: THIS READING SHOULD BE THE DIFFERENCE BETWEEN THE LAST TWO READINGS.
+      TAKE CURRENT DATA STREAM READING SUBTRACT LAST DATA STREAM READING FOR
+      ACTUAL MS VALUE.  FOR FIRST DATA STREAM, THAT READING IS THE MS VALUE.
+
+
+
+ ** : THIS IS A ROLLOVER COUNTER (0 - 255), TAKE CURRENT DATA STREAM READING
+      SUBTRACT LAST DATA STREAM READING = CROSSCOUNTS.  IF CURRENT READING
+      MINUS LAST READING IS < 0, THEN TAKE CURRENT READING + 255 - LAST
+      READING = CROSSCOUNTS.
+
+
+..HEAD02L ALDL DATA LIST
+..HEAD03L
+..HEAD04L
+..HEAD05L
+
+  MANIFOLD AIR TEMPERATURE TABLE
+
+        DEGREES C               A/D
+        TEMPERATURE             COUNTS
+        ------------            ------
+        -40                     0
+        -30                     4
+        -25                     5
+        -20                     8
+        -15                     10
+        -10                     14
+        - 5                     18
+          0                     24
+          5                     30
+         10                     37
+         15                     46
+         20                     56
+         25                     66
+         30                     78
+         35                     90
+         40                     103
+         45                     116
+         50                     129
+         55                     141
+         60                     153
+         65                     163
+         70                     174
+         75                     183
+         80                     191
+         85                     199
+         90                     205
+         95                     211
+        100                     216
+        105                     221
+        110                     225
+        115                     229
+        120                     232
+        125                     234
+        130                     237
+        135                     239
+        140                     241
+        145                     242
+        150                     243
+        200                     255
+
+
+..HEAD02L
+..HEAD03L 8192 BAUD COMMUNICATIONS.
+..HEAD04L ALDL 8192 BAUD: 10K AND SHORTED MODES - MODE 1
+..HEAD05L
+
+
+        The ALDL teste must tansmit the following message to the ECM,
+        to eceive the fixed data steam:
+
+        MODE 1 (TRANSMIT FIXED DATA STREAM)
+                ALDL REQUEST:
+                - MESSAGE ID     = $80
+                - MESSAGE LENGTH = $56
+                - MODE           = $01
+                - SUM CHECK
+
+                THE ECM WILL RESPOND WITH THE FOLLOWING MESSAGE:
+                - MESSAGE ID     = $80
+                - MESSAGE LENGTH = $95
+                - MODE           = $01
+                - DATA BYTE 1
+                  .
+                  .
+                - DATA BYTE 63
+                - SUM CHECK
+
+..HEAD02L ALDL DATA LIST
+..HEAD03L NUMBER OF DATA WORDS - 63
+..HEAD04L ALDL MODE 1: 10K AND SHORTED MODES
+..HEAD05L WORD  BIT   LOCATION
+
+
+
+   WORD BIT  DESCRIPTION                           EQUATION
+   1         PROMIDA (MSB)
+   2         PROMIDB (LSB)                          PROM = (N1*256+N2)
+   3         MALFUNCTION WORD 1
+        0     MALF CODE 23 MAT SENSOR OPEN
+        1     MALF CODE 22 THROTTLE POSITION LOW
+        2     MALF CODE 21 THROTTLE POSITION HIGH
+        3     MALF CODE 16 NOT USED
+        4     MALF CODE 15 COOLANT SENSOR LOW
+        5     MALF CODE 14 COOLANT SENSOR HIGH
+        6     MALF CODE 13 OXYGEN SENSOR
+        7     MALF CODE 12 NO REFERENCE PULSES
+   4         MALFUNCTION WORD 2
+        0     MALF CODE 35 NOT USED
+        1     MALF CODE 34 MAF SENSOR LOW
+        2     MALF CODE 33 MAF SENSOR HIGH
+        3     MALF CODE 32 EGR
+        4     MALF CODE 31 NOT USED
+        5     MALF CODE 26 NOT USED
+        6     MALF CODE 25 MAT SENSOR HI
+        7     MALF CODE 24 VEHICLE SPEED SENSOR
+   5         MALFUNCTION WORD 3
+        4     MALF CODE 51 PROM ERROR
+        5     MALF CODE 46 VATS FAILED
+        5     MALF CODE 45 O2 SENSOR RICH
+        6     MALF CODE 44 O2 SENSOR LEAN
+        7     MALF CODE 43 ESC FAILURE
+        5     MALF CODE 42 EST MONITOR ERROR
+        5     MALF CODE 41 CYLINDER SELECT
+        5     MALF CODE 36 BURNOFF DIAGNOSTICS
+   6         MALFUNCTION WORD 4
+        0     (CODE 63)
+        1     (CODE 62)
+        2     (CODE 61)
+        3     (CODE 56)
+        4     (CODE 55)
+        5     MALF CODE 54 FUEL PUMP VOLTAGE
+        6     MALF CODE 53 OVER VOLTAGE
+        7     MALF CODE 52 CAL PACK MISSING
+   7         MALFUNCTION WORD 5
+        0     (CODE 63)
+        1     (CODE 62)
+        2     (CODE 61)
+        3     (CODE 56)
+        4     (CODE 55)
+        5     MALF CODE 66 NOT USED
+        6     MALF CODE 65 NOT USED
+        7     MALF CODE 64 NOT USED
+   8       COOLANT TEMPERATURE                      N = (DEG C + 40)*256/192
+   9       START UP COOLANT TEMPERATURE             N = (DEGC + 40)*256/192
+   10      THROTTLE POSITION                        VOLTS = N/51
+   11      ENGINE SPEED                             RPM = N*25
+   12      TIME BETWEEN REFERENCE PULSES (MSB)
+   13      TIME BETWEEN REFERENCE PULSES (LSB)      USEC=(N15*256+N16)*15.26
+   14      FILTERED MILES PER HOUR (MSB)
+   15      FILTERED MILES PER HOUR (LSB)
+   16      N/V RATIO
+   17      OXYGEN SENSOR                            MILLIVOLTS = N*4.44
+   18      O2 CROSS COUNTS
+   19      BASE PULSE FINE CORRECTION
+   20      BASE PULSE COURSE CORRECTION(BLM)
+   21      BLOCK LEARN MULTIPLIER CELL              N = BLM CELL #
+   22      CLOSED LOOP INTEGRATOR
+   23      IAC MOTOR POSITION                       N = # IAC STEPS
+   24      IDLE SPEED STEPS COMMAND, DIRECTION      0<N<128 N = # STEPS
+                                                    128<N<256 N = #STEPS +128
+   25      DESIRED IDLE RPM                         RPM = N*12.5
+   26      LOAD VARIABLE  AIRFLOW * RPM
+   27      AD TEST CHANNEL GOOD RANG 118-137
+   28      LOAD VARIABLE 12.5 MSEC OLD
+   29      MANIFOLD ABSOLUTE PRESSURE               VOLTS = N * .0196
+   30      AIR TEMPERATURE SENSOR                   SEE TABLE #1
+   31      EGR DUTY CYCLE                           % DUTY CYCLE = N/2.56
+   32      CHARCOAL CANISTER PURGE DUTY CYCLE
+   33      ENGINE COOLING FAN DUTY CYCLE
+   34      BATTERY VOLTAGE                          VOLTS = N/10
+   35      FUEL PUMP POWER SWITCH SUPPLIED
+   36      MASS  AIR FLOW (MSB)
+   37      MASS  AIR FLOW  (LSB)
+   38      MASS  AIR FLOW  (LSB)
+   39      TOTAL UNLIMITED SPARK ADVANCE REL TO TDC (MSB)
+   40      TOTAL UNLIMITED SPARK ADVANCE REL TO TDC (LSB)
+              double byte value in 2's complement epesentation
+              If Bit 7 of MSB = 0  then esult is positive
+                 value = (N38*256 + N39)
+              If Bit 7 of MSB = 1  then esult is negative
+                 value = 65536 - (N38*256 + N39)
+                                                    DEGREES = value * 90/256
+   41      UNLIMITED SPARK ADVANCE REL TO REF PULSE(MSB)
+   42      UNLIMITED SPARK ADVANCE REL TO REF PULSE(LSB)
+                                                    DEGREES = value * 90/256
+   43      ELECTRONIC SPARK CONTROL SIGNAL INPUT
+   44      ELECTRONIC SPARK CONTROL ECM OUTPUT
+   45      INJECTOR BASE PULSE WIDTH (MSB)
+   46      INJECTOR BASE PULSE WIDTH (LSB)
+   47      TOTAL FUEL AIR VALUE(MSB)
+   48      TOTAL FUEL AIR VALUE(LSB)
+   49      RUNNING TOTAL OF FUEL DELIVERED(MSB)
+   50      RUNNING TOTAL OF FUEL DELIVERED(LSB)
+   51      RUNNING TOTAL OF DISTANCE TRAVELED
+   52      ENGINE RUNNING TIME IN SECONDS (MSB)
+   53      ENGINE RUNNING TIME IN SECONDS (LSB)
+   54      MODE WORD 2
+         0  1 = CARS ACTIVE
+         1  MALF 14 OR 15 THIS START UP
+         2  REFERENCE PULSE OCCURRED
+         3  1 = IN ALDL MODE 8192 LOCKED IN AND MODE 4
+         4  DIAGNOSTIC SWITCH IN DIAG POSITION
+         5  DIAGNOSTIC SWITCH IN ALDL POSITION
+         6  HIGH BATTERY VOLTAGE-DISABLE MCU SOL DISABLE
+         7  SHIFT LIGHT (1 = ON, 0 = OFF)_
+   55      MCUINST
+         0  1 = PARK/NEUTRAL
+         1  1 = NOT IN 3RD GEAR
+         2  1 = OVERDRIVE REQUREST
+         3  NOT USED(1 = POWER STEERING PRESSURE)
+         4  NOT USED
+         5  1 = TRANS CONVERTER CLUTCH LOCKED
+         6  1 = FAN RUEQUEST
+         7  0 = AIR CONDITIOINING REQUEST
+
+
+   56      FMDBYTE 1
+         0  PARK NEUTRAL SWITCH 0=DRIVE
+         1  3RD GEAR = 1
+         2  4TH GEAR = 1
+         3  NOT USED(POWER STEERING CRAMP = 1)
+         4  NOT USED
+         5  EGR DIAGNOSTIC
+         6  FAN REQUEST <=> AIR CONDITIONING HI PRESSURE
+         7  AIR CONDITIONER 0 = A/C REQUESTED
+   57      MINOR LOOP MODE WORD 1
+         0  ADVANCE FLAG        0 = ADV
+         1  1 = HIGHWAY FUEL TIMER ENABLED
+         2  INTERRUPT SERVICE EXECUTION EXC 6.25
+         3  FAN ON DISABLESD BY PID
+         4  TCC ROAD SPEED 1ST PULSE FLAG
+         5  AIR CONDITIONING CLUTCH FLAG 0 = A/C CLUTCH ON
+         6  BYPASS CHECK ENABLE
+         7  ENGINE RUNNING FLAG 1 = RUNNING
+   58      NV MODE WORD
+         0  1 = 02 SENSOR READY
+         1  1 = CLOSED LOOP TIMER TIMED OUT
+         2  NOT USED
+         3  1 = IMPROPER SHUTDOWN
+         4  NOT USED
+         5  1 = IAC KICKDOWN ENABLED
+         6  1 = KWARM KICKDOWN ENABLED
+         7  1 = MALF 42 FAILED (EST MONITOR)
+   59      DNEE MODE WORD
+         0  OVERDRIVE ON        1 = ON
+         1  1ST GEAR DIRCT      1 = 1ST GEAR
+         2  1ST UPSHIFT OK      1 = OK
+         3  4TH GEAR            1 = 4TH GEAR
+         4  1ST GEAR OVERDRIVE  1 = OVERDRIVE
+         5  DOWNSHIFT/OFF REQUEST       1 = REQUEST
+         6  UPSHIFT/ON REQUEST  1 = REQUEST
+         7  OVERDRIVE ACTIVE    1 = ACTIVE
+   60      ALCL  MODE WORD
+         0  ALDL RESET
+         1  1 = CLEAN CANISTER
+         2  1 = IN OPEN LOOP BEFORE GOINT INTO PE
+         3  FIRST C/L PASS THRU FIELD SERVICE MODE 1 = DONE
+         4  FIELD SERVICE
+         5  ONE SECOND FLAG
+         6  200 MSEC TOGGLE BIT FOR 2.5 HZ FLASH RATE
+         7  PULLUP RESISTOR FOR COOLANT 1 = 4K
+   61      AIR MODE WORD
+         0  100 ms old ccp puge on flag        0 = off
+         1  1 = AIR CONTROLLED  0 =AIR DIVERTED
+         2  1 = AIR SWITCHED TO PORT
+         3  1 = BURNOFF FAILURE CHECK COMPLETE
+         4  1 = SKIP BURNOFF DU TO > 17 VOLTS THIS START UP
+         5  1 = D.E. QSEQ
+         6  1 = BURN OFF AIR METER
+         7  1 = DECEL ENLEANMENT
+
+
+   62      SD MODE WORD
+         0  1 = EXPECTING FIRST 160 BAUD INTERRUPT
+         1  1 = EXPECTING SECOND 160 BAUD INTERRUPT
+         2  1 = IN 8192 MODE
+         3  1 = LOCKED IN 8192 MODE
+         4  1 = BLM RESET COMMANDED IN PRIOR LOOP
+         5  1 = IAC RESET COMMANDED IN PRIOR LOOP
+         6  1 = MALFFLAG CLEAR COMMAND IN PRIOR LOOP
+         7  NOT USED
+   63      MWAF1
+         0  NOT USED
+         1  LEARN CONTROL ENABLE FLAG   1 = ENABLE STORE
+         2  NOT USED
+         3  NOT USED
+         4  VEHICLE SPEED SENSOR FAILURE
+         5  EECC SLOW O2 RICH/LEAN FLAG
+         6  RICH-LEAN FLAG      1 = RICH        0 = LEAN
+         7  CLOSED LOOP FLAG    1 = CLOSED      0 = OPEN
+

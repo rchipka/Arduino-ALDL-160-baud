@@ -1,0 +1,267 @@
+* ADD MAT INTERPOLATION FORMULA                        06/24/93        B.HENSON
+
+                        DATA STREAM A11   SPECIFICATION
+
+          ENGINE  USAGE
+              3.0l  MFI  (LN7)   (VIN=L)   86
+              3.0l  MFI  (LN7)   (VIN=L)   87, 88
+
+          DATA PIN  : READ DATA ON PIN "E" OF ALDL CONNECTOR
+
+          BAUD RATE : 160 BAUD
+
+          MODES     : DIAGNOSTIC ENABLE:
+                        10K . . . . . . . YES - 25 WORDS
+                        NORMAL  . . . . . YES - 25 WORDS
+                        SHORTED . . . . . YES - 25 WORDS
+
+       DEFINITION: DATA STREAMS CONTAIN THE DIFFERENT INFORMATION
+                   IN THE FORMATS DEPENDING ON THE MODE.
+
+
+
+  DATA STREAM DEFINITION (10k MODE ONLY)
+  ---------------------------------------------------------
+    WHERE "WORD" IS THE BYTE OF DATA STREAM AS IT IS READ FROM THE VEHICLE
+    AND "BIT" IS THE BIT OF THE BYTE, WHERE 0 IS THE LEAST SIGNIFICANT BIT.
+
+    WORD  BIT   DESCRIPTION
+    1           MODE WORD 2
+            0   ROAD SPEED PULSE OCCURRED                1 = PULSE OCCURRED
+            1   ESC FAILURE
+            2   REFERENCE PULSE OCCURRED                 1 = PULSE OCCURRED
+            3   DIAGNOSTIC SWITCH IN FACTORY TEST        1 = 3.9K MODE
+            4   DIAGNOSTIC SWITCH IN DIAGNOSTIC POSITION 1 = SHORTED MODE
+            5   DIAGNOSTIC SWITCH IN ALDL POSITION       1 = 10K MODE
+            6   HIGH BATTERY VOLTAGE                     1 = HIGH VOLTAGE
+            7   AIR METER PULSE OCCURRED                 1 = PULSE OCCURRED
+    2           FIRST PROM ID WORD
+    3           SECOND PROM ID WORD
+    4           IAC PRESENT MOTOR POSITION
+    5           COOLANT TEMPERATURE   A/D COUNTS
+    6           FILTERED MPH VARIABLE - VEHICLE SPEED
+    7           FILTERED LOAD VARIABLE - N = IND OF LOAD
+    8           ENGINE SPEED
+    9           THROTTLE POSITION  SENSOR
+   10           INTEGRATOR
+   11           OXYGEN SENSOR
+   12           MALFUNCTION FLAG WORD 1
+            0   C24 VEHICLE SPEED SENSOR
+            1   C23 AIR TEMPERATURE SENSOR CIRCUIT OPEN
+            2   C22 THROTTLE POSITION SENSOR LOW
+            3   C21 THROTTLE POSITION SENSOR HIGH
+            4   C15 COOLANT SENSOR LOW TEMPERATURE
+            5   C14 COOLANT SENSOR HIGH TEMPERATURE
+            6   C13 OXYGEN SENSOR OPEN
+            7   C12 NO REFERENCE PULSES (ENG. NOT RUNNING)
+   13           MALFUNCTION FLAG WORD 2
+            0   C42 OPEN EST OR BYPASS CIRCUIT TO ECM
+            1       NOT USED
+            2       NOT USED
+            3   C34 MAF SENSOR LOW
+            4   C33 MAF SENSOR HIGH
+            5   C32 EGR VACUUM ERROR
+            6   C31 WASTEGATE PULSES NOT DETECTED
+            7   C25 AIR TEMPERATURE SENSOR CIRCUIT SHORTED
+   14           MALFUNCTION FLAG WORD 3
+            0   C55 FAULT ECM
+            1       NOT USED
+            2       NOT USED
+            3   C52 CAL PACK MISSING
+            4   C51 PROM ERROR
+            5   C45 OXYGEN SENSOR RICH
+            6   C44 OXYGEN SENSOR LEAN
+            7   C43 ESC FAILURE
+   15           AIR-FUEL (A/F) MODE WORD
+            0   CLEAR FLOOD FLAG            1 = CRANKED IN CLEAR FLOOD
+            1   LEARN CONTROL ENABLE FLAG   1 = ENABLE
+            2   NOT USED
+            3   PROP STEP TAKEN             1 = RICH STEP
+            4   NOT USED
+            5   FIRST TIME CLOSED LOOP FLAG 1 = FIRST TIME
+            6   RICH LEAN FLAG              1 = RICH          0 = LEAN
+            7   CLOSED LOOP FLAG            1 = CLOSED LOOP   0 = OPEN
+
+
+  DATA STREAM DEFINITION (CONT.)
+  ------------------------------
+
+
+    WORD  BIT   DESCRIPTION
+   16           MAF
+   17           MCU  INPUT/OUTPUT STATUS WORD / IO STATUS WORD 1
+            0   PARK/NEUTRAL MODE           0 = IN DRIVE
+            1   CRUISE OR A/C HEAD PRESSURE HIGH  1 = IN CRUISE
+            2   TORQUE CONVERTOR CLUTCH     1 = CONV. LOCKED, SOLENOID ON
+            3   EXCESSIVE POWER STEERING PRESSURE
+            4   CRUISE                      1 = IN CRUISE
+            5   VACUUM PRESENTAT EGR        1 = VACUUM PRESENT
+            6   4TH GEAR SWITCH CLOSED      0 = IN 4TH GEAR
+            7   AIR CONDITIONING REQUEST    0 = REQUESTED
+   18           ELECTRONIC SPARK CONTROL
+   19           BLOCK LEARN MULTIPLIER
+   20           ALDL RICH LEAN CHANGE COUNTER / TOTAL CROSSOVER COUNTS
+
+   FOR 10k MODE ONLY
+
+   21           SPARK ADVANCE
+   22           EGR DUTY CYCLE
+   23           AIR TEMPERATURE SENSOR
+   24           DIAGNOSTICS MODE WORD 3
+            0   MALFUNCTION LITE ON         1 = LITE ON
+            1   MALF 44 OR 45 DETECTED      1 = DETECTED
+            2   IN FORCED TO 128 (MALF 44/45)
+            3   MALF 41 INDCATIED WITHIN LAST SECOND
+            4   UNLATCH MALF 34A PASS BIT
+            5   NOT USED
+            6   VACUUM PRESENT AT EGR       1 = VACUUM PRESENT
+            7   DIAGNOSTIC MODE ENTERED     1 = MODE ENTERED
+   25           GEAR MODE WORD
+            0   3RD GEAR SWITCH             0 = IN 3RD GEAR
+            1   4TH GEAR SWITCH             0 = IN 4TH GEAR
+            2   NOT USED
+            3   NOT USED
+            4   NOT USED
+            5   NOT USED
+            6   NOT USED
+            7   NOT USED
+
+  DATA STREAM DEFINITION DIFFENCES FOR OPEN, 3.9k MODES
+
+   21           DEGREES KNOCK RETARD
+   22           AIR TEMPERATURE SENSOR
+   23           BATTERY VOLTAGE
+   24           NO MALFUNCTION COUNTER
+   25           EGR DUTY CYCLE
+
+
+
+
+
+
+        CONVERSION FOR A/D COUNTS TO ENGINEERING UNITS
+        ----------------------------------------------
+
+                N = A/D COUNTS
+               EU = ENGINEERING UNITS
+
+   DATA STREAM  FOR NORMAL, AND SHORTED MODES:
+                                                         ENGINEERING
+    WORD   DESCRIPTION                     CONVERSION      UNIT
+    1      MODE WORD 2                     NONE
+    2      FIRST PROM ID WORD              NONE
+    3      SECOND PROM ID WORD             NONE
+    4      IAC                             NONE
+    5      COOLANT TEMPERATURE             TABLE LOOKUP    DEGREES C
+    6      FILTERED MPH VARIABLE           NONE
+    7      FILTERED LOAD VARIABLE          NONE
+    8      ENGINE SPEED                    EU = N*25       RPM
+    9      THROTTLE POSITION  SENSOR       EU = N*.0196    VOLTS
+   10      INTEGRATOR                      NONE
+   11      OXYGEN SENSOR                   EU = N*4.44     MILLIVOLTS
+   12      MALFUNCTION FLAG WORD 1         NONE
+   13      MALFUNCTION FLAG WORD 2         NONE
+   14      MALFUNCTION FLAG WORD 3         NONE
+   15      AIR-FUEL (A/F) MODE WORD        NONE
+   16      MAF                             NONE
+   17      MCU  STATUS WORD                NONE
+   18      ELECTRONIC SPARK CONTROL        NONE
+   19      BLOCK LEARN MULTIPLIER          NONE
+   20      ALDL RICH LEAN CHANGE COUNTER   SEE **
+
+   FOR 10k MODE ONLY
+
+   21      SPARK ADVANCE                   EU = N*(90/255)  DEGREES
+   22      EGR DUTY CYCLE                  EU = N*/2.56  % DUTY CYCLE
+   23      AIR TEMPERATURE SENSOR          TABLE LOOKUP
+   24      DIAGNOSTICS MODE WORD 3         NONE
+   25      GEAR MODE WORD                  NONE
+
+ ** : THIS IS A ROLLOVER COUNTER (0 - 255), TAKE CURRENT DATA STREAM READING
+      SUBTRACT LAST DATA STREAM READING = CROSSCOUNTS.  IF CURRENT READING
+      MINUS LAST READING IS < 0, THEN TAKE CURRENT READING + 255 - LAST
+      READING = CROSSCOUNTS
+
+
+        COOLANT TEMPERATURE SENSOR CONVERSION
+        -----------------------------------------
+
+
+        DEGREES CELSIUS               A/D COUNTS
+                -18                     30
+                -14                     35
+                -10                     40
+                 -6                     45
+                 -3                     50
+                  1                     55
+                  5                     60
+                  9                     65
+                 13                     70
+                 16                     75
+                 20                     80
+                 24                     85
+                 28                     90
+                 31                     95
+                 35                    100
+                 39                    105
+                 43                    110
+                 46                    115
+                 50                    120
+                 54                    125
+                 58                    130
+                 61                    135
+                 65                    140
+                 69                    145
+                 73                    150
+                 76                    155
+                 80                    160
+                 84                    165
+                 88                    170
+                 91                    175
+                 95                    180
+                 99                    185
+                103                    190
+                105                    195
+                110                    200
+                114                    205
+                118                    210
+                121                    215
+                125                    220
+                129                    225
+                133                    230
+                136                    235
+                140                    240
+                144                    245
+                148                    250
+                151                    255
+
+
+
+
+          AIR TEMPERATURE SENSOR
+
+      T(X1)        AIR TEMPERATURE (DEG C)
+       0                -40
+       1                -25
+       2                -12
+       3                - 3
+       4                  4
+       5                 11
+       6                 16
+       7                 22
+       8                 27
+       9                 33
+      10                 39
+      11                 46
+      12                 54
+      13                 64
+      14                 77
+      15                102
+      16                151
+
+*       X  = A/D counts fom data steam
+*       XT = X/16
+*       X1 = Int (XT)
+*       XF = XT - X1
+*       MAT TEMPERATURE IN DEGREES C = T(X1) + XF * [T(X1 + 1) - T(X1)]
+

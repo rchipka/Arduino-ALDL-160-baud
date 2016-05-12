@@ -1,0 +1,230 @@
+
+
+                        DATA STREAM A20   SPECIFICATION
+
+       ENGINE   USAGE:
+              2.8l MFI     (LB6) - (W) - 85, 86
+              2.8l MFI     (LB8) - (S) - 86, 87, 88, 89
+              5.0l MFI     (LB9) - (F) - 85
+
+       DATA PIN  : READ DATA ON PIN "E" OF ALDL CONNECTOR
+
+       BAUD RATE : 160 BAUD
+
+       MODES     : DIAGNOSTIC ENABLE:
+                     MODULATED . . . . NO
+                     10K . . . . . . . YES - 25 WORDS
+                     NORMAL  . . . . . YES -  8 WORDS
+                     SHORTED . . . . . YES - 25 WORDS
+
+       DEFINITION: ALL DATA STREAMS CONTAIN THE SAME INFORMATION
+                   IN THE SAME FORMAT
+
+
+
+
+
+  DATA STREAM DEFINITION
+  ----------------------
+    WHERE "WORD" IS THE BYTE OF DATA STREAM AS IT IS READ FROM THE VEHICLE
+    AND "BIT" IS THE BIT OF THE BYTE, WHERE 0 IS THE LEAST SIGNIFICANT BIT.
+
+    WORD  BIT   DESCRIPTION
+    1           MODE WORD 2
+            0   ROAD SPEED PULSE OCCURRED                1 = PULSE OCCURRED
+            1   ESC FAILURE
+            2   REFERENCE PULSE OCCURRED                 1 = PULSE OCCURRED
+            3   DIAGNOSTIC SWITCH IN FACTORY TEST        1 = 3.9K MODE
+            4   DIAGNOSTIC SWITCH IN DIAGNOSTIC POSITION 1 = SHORTED MODE
+            5   DIAGNOSTIC SWITCH IN ALDL POSITION       1 = 10K MODE
+            6   HIGH BATTERY VOLTAGE                     1 = HIGH VOLTAGE
+            7   AIR METER PULSE OCCURRED
+    2           FIRST PROM ID WORD
+    3           SECOND PROM ID WORD
+    4           IAC PRESENT MOTOR POSITION
+    5           COOLANT TEMPERATURE   A/D COUNTS
+    6           FILTERED MPH VARIABLE - VEHICLE SPEED
+    7           EGR DUTY CYCLE
+    8           ENGINE SPEED
+    9           THROTTLE POSITION  SENSOR
+   10           BASE PULSE CLOSED LOOP CORRECTION
+   11           OXYGEN SENSOR
+   12           MALFUNCTION FLAG WORD 1
+            0   C24 VEHICLE SPEED SENSOR
+            1   C23 MANIFOLD AIR  TEMPERATURE LOW
+            2   C22 THROTTLE POSITION SENSOR LOW
+            3   C21 THROTTLE POSITION SENSOR HIGH
+            4   C15 COOLANT SENSOR LOW TEMPERATURE
+            5   C14 COOLANT SENSOR HIGH TEMPERATURE
+            6   C13 OXYGEN SENSOR OPEN
+            7   C12 NO REFERENCE PULSES (ENG. NOT RUNNING)
+   13           MALFUNCTION FLAG WORD 2
+            0   C42 EST MONITOR ERROR
+            1   C41 CYLINDER SELECT ERROR
+            2       NOT USED
+            3   C34 MAF SENSOR LOW
+            4   C33 MAF SENSOR HIGH
+            5   C32 EXHAUST GAS RECIRCULATION FAILURE
+            6       NOT USED
+            7   C25 MANIFOLD AIR  TEMPERATURE HIGH
+   14           MALFUNCTION FLAG WORD 3
+            0   C55 ADU ERROR
+            1   C54 FUEL PUMP VOLTAGE
+            2   C53 HIGH BATTERY VOLTAGE
+            3   C52 CAL PACK MISSING
+            4   C51 PROM ERROR
+            5   C45 OXYGEN SENSOR RICH
+            6   C44 OXYGEN SENSOR LEAN
+            7   C43 ELECTRONIC SPARK CONTROL FAILURE
+
+
+
+
+  DATA STREAM DEFINITION (CONT.)
+  ------------------------------
+
+
+    WORD  BIT   DESCRIPTION
+   15           AIR-FUEL (A/F) MODE WORD
+            0   FOURTH TPS FORCED O/D DISABLE
+            1   LEARN CONTROL ENABLE FLAG   1 = ENABLE
+            2   LOW BATTERY VOLTAGE         1 = LOW BATTERY
+            3   PROP STEP TAKEN FLAG        1 = RICH
+            4   VEHICLE SPEED SENSOR FAILURE
+            5   EECC SLOW O2 RICH/LEAN FLAG
+            6   RICH LEAN FLAG              1 = RICH          0 = LEAN
+            7   CLOSED LOOP FLAG            1 = CLOSED LOOP   0 = OPEN
+   16           MANIFOLD AIR TEMPERATURE
+   17           MCU INPUT STATUS WORD
+            0   PARK/NEUTRAL                1 = PARK          0 = DRIVE
+³           1   FAN REQUEST                 1 = NO/OFF        0 = YES/ON
+            2   TCC LOCKED OR OVER DRIVE ENABLED 1 = ENABLE
+            3   EXCESSIVE POWER STEERING PRESSURE
+            4   100 MSEC OLD 4TH GEAR (SET/CLEARED IN TCC)
+            5   NOT IN 3RD GEAR             1 = NOT IN 3RD
+            6   4TH GEAR SWITCH CLOSED      1 = NOT IN 4TH    0 = IN 4TH GEAR
+            7   A/C REQUESTED               1 = NO            0 = A/C REQUESTED
+   18           LOAD VARIABLE
+   19           BLOCK LEARN MULTIPLIER
+   20           ALDL RICH LEAN CHANGE COUNTER / TOTAL CROSSOVER COUNTS
+   21           UNLIMITED SPARK ADVANCE  (not used)
+   22           MASS AIR FLOW RATE BYTE #1  (MAF)
+   23           MASS AIR FLOW RATE BYTE #2  (MAF)
+   24           BASE PULSE WIDTH BYTE #1
+   25           BASE PULSE WIDTH BYTE #2
+
+
+
+
+
+
+        CONVERSION FOR A/D COUNTS TO ENGINEERING UNITS
+        ----------------------------------------------
+
+                N = A/D COUNTS
+               EU = ENGINEERING UNITS
+
+                EU = N*A + B
+                EU =
+                EU = N
+                EU = TABLE LOOKUP
+
+
+
+
+
+                                                         ENGINEERING
+    WORD   DESCRIPTION                     CONVERSION      UNIT
+    1      MODE WORD 2                     NONE
+    2      FIRST PROM ID WORD              NONE
+    3      SECOND PROM ID WORD             NONE
+    4      IAC                             NONE
+    5      COOLANT TEMPERATURE             SEE TABLES       DEGREES C
+    6      VEHICLE SPEED                   NONE
+    7      EGR DUTY CYCLE                  EU = N/2.56     % DUTY CYCLE
+    8      RPM                             EU = N*25        RPM
+    9      THROTTLE POSITION               EU = N*.0196     VOLTS
+   10      BASE PULSE CLOSED LOOP CORRECTION    NONE
+   11      OXYGEN SENSOR                   EU = N*4.44      MILLIVOLTS
+   12      MALF FLAG WORD 1                NONE
+   13      MALF FLAG WORD 2                NONE
+   14      MALF FLAG WORD 3                NONE
+   15      FUEL-AIR MODE WORD              NONE
+   16      MANIFOLD AIR TEMPERATURE        TABLE LOOKUP
+   17      MCU INPUT STATUS WORD           NONE
+   18      LOAD VARIABLE
+   19      BLOCK LEARN MULTIPLIER          NONE
+   20      ALDL RICH LEAN CHANGE COUNTER   SEE **
+   21      UNLIMITED SPARK ADVANCE         Not used !
+   22      MASS AIR FLOW RATE BYTE #1
+   23      MASS AIR FLOW RATE BYTE #2
+   24      BASE PULSE WIDTH BYTE #1
+   25      BASE PULSE WIDTH BYTE #2        EU =(BYTE1*256+BYTE2)*.0153 *** MS
+
+
+ ** : THIS IS A ROLLOVER COUNTER (0 - 255), TAKE CURRENT DATA STREAM READING
+      SUBTRACT LAST DATA STREAM READING = CROSSCOUNTS.  IF CURRENT READING
+      MINUS LAST READING IS < 0, THEN TAKE CURRENT READING + 255 - LAST
+      READING = CROSSCOUNTS.
+
+ ***: THIS READING SHOULD BE THE DIFFERENCE BETWEEN THE LAST TWO READINGS.
+      TAKE CURRENT DATA STREAM READING SUBTRACT LAST DATA STREAM READING FOR
+      ACTUAL MS VALUE.  FOR FIRST DATA STREAM, THAT READING IS THE MS VALUE.
+
+
+
+
+
+
+        AIR TEMPERATURE SENSOR TABLE
+
+        DEGREES C               A/D COUNTS
+        ------------            -----------
+
+        -40                        0
+        -30                        4
+        -25                        5
+        -20                        8
+        -15                       10
+        -10                       14
+        - 5                       18
+          0                       24
+          5                       30
+         10                       37
+         15                       46
+         20                       56
+         25                       66
+         30                       78
+         35                       90
+         40                       103
+         45                       116
+         50                       129
+         55                       141
+         60                       153
+         65                       163
+         70                       174
+         75                       183
+         80                       191
+         85                       199
+         90                       295
+         95                       211
+        100                       216
+        105                       221
+        110                       225
+        115                       229
+        120                       232
+        125                       234
+        130                       237
+        135                       239
+        140                       241
+        145                       241
+        150                       243
+        200                       255
+
+
+LAYOUT 000
+:  \B 
+  
+        <   ?   A   ú \---+----+----+----+---------+---------+---------+---------+--@-/----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                       \B
+ <

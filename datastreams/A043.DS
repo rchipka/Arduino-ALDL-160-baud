@@ -1,0 +1,181 @@
+
+                        DATA STREAM A43   SPECIFICATION
+
+              5.0l V8 CLCC BUICK - (LV2) - (Y) - 88,89,90
+              5.0l V8 CLCC BUICK - (LG8) - (9) - 88,89,90
+
+       DATA PIN  : READ DATA ON PIN "D" OF ALDL CONNECTOR
+
+       BAUD RATE : 160 BAUD
+
+       MODES     : DIAGNOSTIC ENABLE:
+                     MODULATED . . . . NO
+                     10K . . . . . . . YES - 25 WORDS
+                     NORMAL  . . . . . NO
+                     SHORTED . . . . . YES - 25 WORDS
+
+       DEFINITION: DATA STREAMS CONTAIN THE SAME INFORMATION
+                   IN THE SAME FORMAT WITH 20 WORD FORMAT.
+
+
+
+
+
+  DATA STREAM DEFINITION
+  ----------------------
+    WHERE "WORD" IS THE BYTE OF DATA STREAM AS IT IS READ FROM THE VEHICLE
+    AND "BIT" IS THE BIT OF THE BYTE, WHERE 0 IS THE LEAST SIGNIFICANT BIT.
+
+    WORD  BIT   DESCRIPTION
+    ----  ---   ---------------
+    1     PROMID    PROMID BYTE 1
+    2     PROMID    PROMID BYTE 2
+                      PROM = (N1*256+N2)
+    3     BAT       BATTERY VOLTAGE
+                      VOLTS = N/10
+    4     COOL      COOLANT TEMPERATURE
+                      DEGREES C=SEE TABLE #1
+    5     MPH       VEHICLE SPEED
+                      MPH = N
+    6     PRES      MAP(WORKS LIKE A VACUUM)
+                      VOLTS = 5.62 -(N*.0196)
+    7     MW1       MODE WORD 1
+            0   ADVANCE FLAG                            0 = ADVANCE
+            1   WARM FLAG                               1 = WARM
+            2   TIMING ERROR - 100 MSEC LOGIC FAILED TO COMPLETE
+            3   HOT ENGINE MODE                         1 = HOT ENGINE
+            4   TCC ROAD SPEED 1ST PULSE FLAG
+            5   REAR VACUUM BREAK SOLENOID ON           1 = SOLENOID ON
+            6   EST ENABLED FLAG
+            7   ENGINE RUNNING FLAG                     1 = RUNNING
+    8     TPS       THROTTLE POSITION SENSOR
+                      VOLTS = N * .0196
+    9     O2AVG     OXYGEN SENSOR
+                      MILLIVOLTS = N *4.44
+    10    D/C       MIXTURE CONTROL SOLENOID DUTY CYCLE
+                      %DUTY CYCLE = N/2.56
+                      DEGREES = 60*N/256
+    11    MALF1     MALFUNCTION FLAG WORD 1
+            0   C24 VEHICLE SPEED SENSOR
+            1   C23 AIR FUEL SOLENOID
+            2       NOT USED
+            3   C21 THROTTLE POSITION SENSOR
+            4   C15 COOLANT SENSOR LOW TEMPERATURE
+            5   C14 COOLANT SENSOR HIGH TEMPERATURE
+            6   C13 OXYGEN SENSOR OPEN
+            7   C12 NO REFERENCE PULSES (ENGINE NOT RUNNING)
+
+
+
+
+  DATA STREAM DEFINITION CON'T
+  ----------------------------
+
+    WORD  BIT   DESCRIPTION
+    ----  ---   ---------------
+    12    MALF2     MALFUNCTION FLAG WORD 2
+            0   C42 EST MONITOR ERROR
+            1   C41 NOT USED
+            2   C35 NOT USED
+            3   C34 PRESSURE SENSOR
+            4       NOT USED
+            5   C32 BARO SENSOR LOW
+            6   C31 CANISTER PURGE
+            7   C25 NOT USED
+    13    MALF3     MALFUNCTION FLAG WORD 3
+            0   C55 NOT USED
+            1   C54 CARB. MIXTURE CONTROL SOLENOID
+            2   C53 NOT USED
+            3   C52 NOT USED
+            4   C51 PROM ERROR
+            5   C45 OXYGEN SENSOR RICH
+            6   C44 OXYGEN SENSOR LEAN
+            7       NOT USED
+    14    CLCCMW    CLCC MODE WORD
+            0   BLENDED ENRICHMENT FLAG                 1 = BLENDED
+            1   COLD START                              1 = COLD START
+            2   IDLE LOAD CONTROL WIDE OPEN THROTTLE    1 = WOT
+            3   WIDE OPEN THROTTLE                      1 = WOT
+            4   ILLEGAL PT/CT CAM VALVE DETECTED
+            5   O2 RICH/LEAN FLAG                       1 = RICH
+            6   NONVOLATILE MEMORY BOMBED               1 = BOMBED
+            7   CLOSED LOOP FLAG                        1 = CLOSED LOOP
+    15    INPUTS    INPUT STATUS WORD
+            0   NOT USED
+            1   NOT USED
+            2   NOT USED
+            3   AIR FUEL CYLINDER FEED BACK             1 = IN
+            4   HIGH GEAR SWITCH                        1 = IN 4TH GEAR
+            5   A/C REQUEST                             1 = REQUEST
+            6   FREON PRESSURE SWITCH
+            7   PARK/NEUTRAL                            1 = IN PARK/NEUTRAL
+    16    OUTPUTS   OUTPUT STATUS WORD
+            0   R.U.B. RELAY
+            1   TCC LOCKED                              0 = OFF
+            2   AIR DIVERT SOLENOID                     1 = SOLENOID ON
+            3   AIR SWITCH SOLENOID                     1 = SOLENOID ON
+            4   ILC SOLENOID                            1 = SOLENOID ON
+            5   A/C S.O.K.
+            6   EFR SOLENOID                            1 = SOLENOID ON
+            7   CCP SOLENOID                            1 = SOLENOID ON
+    17    OLDPA3    OLDPA3
+
+
+
+
+  DATA STREAM DEFINITION CON'T
+  ----------------------------
+
+    WORD  BIT   DESCRIPTION
+    ----  ---   ---------------
+    18    RPM       ENGINE RPM
+                      RPM = N * 25
+    19    BARO      BAROMETRIC PRESSURE ("G" CAR ONLY)
+                      VOLTS = N *.0196
+    20    ALDLCNTR  TOTAL CROSSOVER COUNTS
+    21    SAC       SPARK ADVANCE
+                      DEGREES = N*90/256
+    22    TPSLOAD   TPS LOAD
+                      %THROTTLE = N/2.56
+    23    NOCKRTD   KNOCK RETARD
+                      DEGREES = N*45/256
+    24    CTDGM     CLOSED THROTTLE DUTY CYCLE
+    25    PTDGM     PART THROTTLE DUTY CYCLE
+
+ ** : THIS IS A ROLLOVER COUNTER (0 - 255), TAKE CURRENT DATA STREAM READING
+      SUBTRACT LAST DATA STREAM READING = CROSSCOUNTS.  IF CURRENT READING
+      MINUS LAST READING IS < 0, THEN TAKE CURRENT READING + 255 - LAST
+      READING = CROSSCOUNTS
+
+
+
+
+
+
+        COOLANT TEMPERATURE CONVERSION
+        --------------------------------
+
+        DEGREES CELSIUS           A/D COUNTS
+        ---------------           ----------
+             -15                     252
+              -5                     249
+               5                     244
+              15                     237
+              25                     228
+              35                     215
+              45                     198
+              55                     179
+              65                     158
+              75                     136
+              85                     115
+              95                     95
+             100                     86
+             105                     78
+             110                     70
+             115                     63
+             120                     57
+
+
+
+
+

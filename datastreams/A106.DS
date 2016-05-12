@@ -1,0 +1,164 @@
+                        DATA STREAM A106   SPECIFICATION
+
+       SPECIFICATIONS FOR  DATA STREAM INFORMATION
+       -------------------------------------------
+
+       ENGINE   USAGE:
+                   5.7L  1x2 TBI (L05) (VIN=K) 90 (HEAVY DUTY EMISSIONS) TRUCK
+                   7.4L  1x2 TBI (L19) (VIN=N) 90 (HEAVY DUTY EMISSIONS) TRUCK
+                   5.7L TBI   (L05)   (VIN=K)   91 HEAVY DUTY EMISSIONS
+                   7.4L TBI   (L19)   (VIN=N)   91 HEAVY DUTY EMISSIONS
+                   5.7L TBI   (L05)   (VIN=K)   92 HEAVY DUTY EMISSIONS
+                   7.4L TBI   (L19)   (VIN=N)   92 HEAVY DUTY EMISSIONS
+  *                7.4L TBI   (L19)   (VIN=N)   93 C,K HEAVY DUTY EMISSIONS
+
+       DATA PIN  : READ DATA ON PIN "E" OF ALDL CONNECTOR
+
+       BAUD RATE : GMCM 160 BAUD UNI-DIRECTIONAL ALDL DATA STREAM
+
+       MODES: NORMAL... 20 WORDS
+              10K...... 20 WORDS
+              SHORTED.. 20 WORDS
+              MODULATED NO
+..END
+..HEAD02L ALDL DATA LIST
+..HEAD03L NUMBER OF DATA WORDS - 20
+WORD #    DATA NAME                 DESCRIPTION
+
+  1.     MW2           MODE WORD 2
+                   0     ROAD SPEED PULSE OCCURRED (6.25 MSEC CHECK)
+                   1     O/L IDLE FLAG FOR AIR SWITCH ENGAGE AT IDLE
+                   2     REFERENCE PULSE OCCURRED (6.25 MSEC CHECK)
+                   3     DIAGNOSTIC SWITCH IN FACTORY TES POSITION (3.9K)
+                   4     DIAGNOSTIC SWITCH IN DIAGNOSTIC POSITION (0 OHMS)
+                   5     DIAGNOSTIC SWITCH IN ALDL POSITION (10K)
+                   6     HIGH BATTERY VOLTAGE-DISABLE MCU SOLENOID DISCREETS
+                   7*    IDLE FLAG  1=TPS < KISTPSI & MPH < KIDLMPH
+  2.     PROMIDA       FIRST PROM ID WORD
+  3.     PROMIDB       SECOND PROM ID WORD
+  4.     ISSPMP        IAC PRESENT MOTOR POSITION
+                        N = IAC STEPS
+  5.     ADCOOL        COOLANT TEMPERATURE, A/D COUNTS
+                        SEE ATTACHED TABLE
+  6.     FILTMPH       FILTERED MILES PER HOUR VARIABLE
+                        MPH = N
+  7.     ADMAP         MANIFOLD ABSOLUTE PRESSURE VARIABLE
+                        VOLTS = N*(5/255)
+  8.     NTRPMX        ENGINE SPEED (RPM) VARIABLE
+                        RPM = N*25
+  9.     ADTHROT       THROTTLE POSITION, A/D COUNTS
+                        VOLTS = N*(5/255)
+  10.    INT           INTEGRATOR, BASE PULSE (FUEL) CORRECTION
+  11.    ADO2A         OXYGEN SENSOR MINOR LOOP FILTERED VALUE
+                        MILLIVOLTS = N * (1000/226)
+  12.    MALFFLG1      MALF FLAG WORD 1
+                   0     MALF CODE 24  VEHICLE SPEED SENSOR
+                   1     MALF CODE 23  NOT USED
+                   2     MALF CODE 22  THROTTLE POSITION SENSOR LOW
+                   3     MALF CODE 21  THROTTLE POSITION SENSOR HIGH
+                   4     MALF CODE 15  COOLANT SENSOR LOW TEMPERATURE
+                   5     MALF CODE 14  COOLANT SENSOR HIGH TEMPERATURE
+                   6     MALF CODE 13  OXYGEN SENSOR
+                   7     MALF CODE 12  NO REFERENCE PULSES (ENGINE NOT RUNNING)
+..PAGE
+  13.    MALFFLG2      MALF FLAG WORD 2
+                   0     MALF CODE 42  ELECTRONIC SPARK TIMING MONITOR ERROR
+                   1     MALF CODE 41  NOT USED
+                   2     MALF CODE 35  NOT USED
+                   3     MALF CODE 34  MAP SENSOR LOW
+                   4     MALF CODE 33  MAP SENSOR HIGH
+                   5     MALF CODE 32  EXHAUST GAS RECIRCULATION FAILURE
+                   6     MALF CODE 31  NOT USED
+                   7     MALF CODE 25  NOT USED
+  14.    MALFFLG3      MALF FLAG WORD 3
+                   0     MALF CODE 55  ADU ERROR
+                   1     MALF CODE 54  FUEL PUMP RELAY MALFUNCTION
+                   2     MALF CODE 53  GOVERNOR MALFUNCTION
+                   3     MALF CODE 52  CAL-PACK MISSING
+                   4     MALF CODE 51  PROM ERROR
+                   5     MALF CODE 45  OXYGEN SENSOR RICH
+                   6     MALF CODE 44  OXYGEN SENSOR LEAN
+                   7     MALF CODE 43  ELECTRONIC SPARK CONTROL FAILURE
+  15.    MWAF1         AIR/FUEL MODE WORD 1
+                   0     CLEAR FLOOD FLAG (1=CRANKED IN CLEAR FLOOD MODE)
+                   1     LEARN CONTROL ENABLE FLAG (1=ENABLE STORE, 0=DISABLE)
+                   2     LOW BATTERY (1=LOW)
+                   3     A/F DECAY INTERRUPT DONE FLAG FOR COLD PARK-TO-DRIVE
+                   4     ASYNCHRONOUS PULSE FLAG (AP FLAG)
+                   5     CLOSED LOOP FOR O/L IDLE CONDITION
+                   6     RICH LEAN FLAG (1=RICH, 0=LEAN)
+                   7     CLOSED LOOP FLAG (1=CLOSED LOOP, 0=OPEN LOOP)
+  16.    ADBAT         BATTERY VOLTAGE, A/D COUNTS
+                        VOLTS = N/10
+  17.    MCU2IO        MCU INPUT/OUTPUT SECOND STATUS WORD
+                   0     AIR SWITCH (1 = SOLENOID ENGAGED)
+                   1     AIR DIVERT (1 = SOLENOID ENGAGED)
+                   2     OF3 GOVERNOR OVER SPEED LIGHT (1=LIGHT ON)
+                   3     TCC (1 = CONVERTER LOCKED, SOLENOID ON )
+                   4     PARK NEUTRAL (0 = DRIVE)
+                   5     HIGH GEAR (0 = SWITCH OPEN = HIGH GEAR ACTIVE)
+                   6     FRTH (NOT USED)
+                   7     AIR CONDITIONER (0 = A/C REQUESTED)
+..PAGE
+  18.    OLDPA3        ELECTRONIC SPARK CONT.(KNOCK) COUNTER INPUT
+                        N = COUNTS
+  19.    BLM           BLOCK LEARN MULTIPLIER,BASE PULSE FUEL CORR
+  20.    ALDLCNTR      OXYGEN SENSOR VOLTAGE TRANSITION COUNTER
+                        N = O2 SENSOR RICH/LEAN TRANSITION COUNTER
+
+
+    *  This flag is not usable in 10K mode (ALDL Mode)
+
+
+..HEAD02L ALDL DATA LIST
+..HEAD03L NUMBER OF DATA WORDS - 20
+
+               COOLANT TEMPERATURE CONVERSION TABLE
+
+         COOLANT TEMPERATURE
+              DEG. C                            ADCOOL
+         -------------------                   --------
+              -40                                253
+              -30                                251
+              -25                                250
+              -20                                247
+              -15                                245
+              -10                                241
+               -5                                237
+                0                                231
+                5                                225
+               10                                218
+               15                                209
+               20                                199
+               25                                189
+               30                                177
+               35                                165
+               40                                152
+               45                                139
+               50                                126
+               55                                114
+               60                                102
+               65                                 92
+               70                                 81
+               75                                 72
+               80                                 64
+               85                                 56
+               90                                 50
+               95                                 44
+              100                                 39
+              105                                 34
+              110                                 30
+              115                                 26
+              120                                 23
+              125                                 21
+              130                                 18
+              135                                 16
+              140                                 14
+              145                                 13
+              150                                 12
+
+
+
+LAYOUT 000
+:  XB 
+  Su¦     <_        ú \------------------------------------------------------------------------------/----+---------+---------+---------+---------+---------+---------+---------+---------+---------+---------+---------+---------+---------+---------+---------+---------+----     STANDARD 2      XB  <

@@ -1,0 +1,222 @@
+
+                        DATA STREAM A7    SPECIFICATION
+
+
+       SPECIFICATIONS FOR  DATA STREAM INFORMATION
+       -------------------------------------------
+
+       ENGINE  USAGES:
+              5.0l V8 CLCC (LV2) - (Y) - 85, 86, 87
+              5.0l V8 CLCC (LG8) - (9) - 85
+              5.0l V8 CLCC (L69) - (G) - 85
+              5.0L V8 CLCC (LG4) - (H) - 85, 86, 87
+              5.7L V8 CLCC (LM1) - (6) - 85, 86, 87, 88
+              4.3L V8 CLCC (LB1) - (N) - 85, 86
+              5.0L V8 CLCC (LF3) - (H) - 85, 86
+              5.7L V8 CLCC (LS9) - (L) - 85, 86
+
+       DATA PIN  : READ DATA ON PIN "D" OF ALDL CONNECTOR
+
+       BAUD RATE : 160 BAUD
+
+       MODES     : DIAGNOSTIC ENABLE:
+                     MODULATED . . . . NO
+                     10K . . . . . . . YES - 20 WORDS
+                     NORMAL  . . . . . NO SHORTED . . . . . YES -
+20 WORDS
+
+       DEFINITION: DATA STREAMS CONTAIN THE SAME INFORMATION
+                   IN THE SAME FORMAT WITH 20 WORD FORMAT.
+
+
+
+
+
+  DATA STREAM DEFINITION
+  ----------------------
+    WHERE "WORD" IS THE BYTE OF DATA STREAM AS IT IS READ FROM THE VEHICLE
+    AND "BIT" IS THE BIT OF THE BYTE, WHERE 0 IS THE LEAST SIGNIFICANT BIT.
+
+    WORD  BIT   DESCRIPTION
+    ----  ---   ---------------
+    1           PROMID BYTE 1
+    2           PROMID BYTE 2
+    3           BATTERY VOLTAGE
+    4           COOLANT TEMPERATURE
+    5           VEHICLE SPEED
+    6           MANIFOLD ABSOLUTE PRESSURE
+    7           MODE WORD 1
+            0   ADVANCE FLAG                            0 = ADVANCE
+            1   WARM FLAG                               1 = WARM
+            2   TIMING ERROR - 100 MSEC LOGIC FAILED TO COMPLETE
+            3   HOT ENGINE MODE                         1 = HOT ENGINE
+            4   TCC ROAD SPEED 1ST PULSE FLAG           1 = TCC ON
+            5   REAR VACUUM BREAK SOLENOID ON           1 = SOLENOID ON
+            6   EST ENABLED FLAG
+            7   ENGINE RUNNING FLAG                     1 = RUNNING
+    8           THROTTLE POSITION SENSOR
+    9           OXYGEN SENSOR
+    10          MIXTURE CONTROL SOLENOID DUTY CYCLE
+    11          MALFUNCTION FLAG WORD 1
+            0   C24 VEHICLE SPEED SENSOR
+            1   C23 AIR FUEL SOLENOID
+            2   C22 THROTTLE POSITION SENSOR LOW
+            3   C21 THROTTLE POSITION SENSOR HIGH
+            4   C15 COOLANT SENSOR LOW TEMPERATURE
+            5   C14 COOLANT SENSOR HIGH TEMPERATURE
+            6   C13 OXYGEN SENSOR
+            7   C12 NO REFERENCE PULSES (ENGINE NOT RUNNING)
+    12          MALFUNCTION FLAG WORD 2
+            0   C42 BYPASS LINE ERROR
+            1   C41 TACH INPUT ERROR
+            2       NOT USED
+            3   C34 PRESSURE SENSOR
+            4       NOT USED
+            5   C32 BARO SENSOR VOLTAGE LOW
+            6       NOT USED
+            7       NOT USED
+    13          MALFUNCTION FLAG WORD 3
+            0       NOT USED
+            1   C54 CARB. MIXTURE CONTROL SOLENOID
+*           2   C53 EGR VACUUM ERROR
+            3       NOT USED
+            4   C51 PROM ERROR
+            5   C45 OXYGEN SENSOR RICH
+            6   C44 OXYGEN SENSOR LEAN
+            7   C43 ESC FAILURE
+
+
+
+
+  DATA STREAM DEFINITION CON'T
+  ----------------------------
+
+    WORD  BIT   DESCRIPTION
+    ----  ---   ---------------
+    14          CLCC MODE WORD
+            0   BLENDED ENRICHMENT FLAG                 1 = BLENDED
+            1   COLD START                              1 = COLD START
+            2   IDLE LOAD CONTROL WIDE OPEN THROTTLE    1 = WOT
+            3   WIDE OPEN THROTTLE                      1 = WOT
+            4   ILLEGAL PART THROTTLE/CLOSED THROTTLE KAM VALUE DETECTED
+            5   O2 RICH/LEAN FLAG                       1 = RICH
+            6   NONVOLATILE MEMORY BOMBED               1 = BOMBED
+            7   CLOSED LOOP FLAG                        1 = CLOSED LOOP
+    15          I/O STATUS WORD 1
+            0   NOT USED
+            1   NOT USED
+            2   REAR VACUUM BREAK OUTPUT
+            3   TRANSMISSION LOCKUP
+            4   NOT USED
+            5   HIGH GEAR SWITCH                        0 = 4TH GEAR
+            6   NOT USED (LOW/MID GEAR SWITCH)
+            7   FREON PRESSURE CONTROL
+    16          I/O STATUS WORD 2
+            0   AIR DIVERT SOLENOID                     1 = SOLENOID ON
+            1   AIR SWITCH SOLENOID                     1 = SOLENOID ON
+            2   NOT USED
+            3   IDLE LOAD CONTROL SOLENOID
+            4   NOT USED
+            5   P/N SWITCH                              1 = PARK OR NEUTRAL
+            6   AIR CONDITIONING                        1 = A/C OFF
+            7   AIR/FUEL SOLENOID TEST                  1 = SOLENOID ON
+    17          MODE WORD
+            0   AIR CONDITIONING SWITCH ON              1 = ON
+            1   MOUNTAIN COAST MODE ON                  1 = ON
+            2   STACK OVERRIDE ON RAM FLAG
+            3   AIR CONDITIONING CLUTCH DESIRED         1 = DESIRED
+            4   EXHAUSE GAS RECIRCULATION               1 = ON
+            5   NOT USED
+            6   WARM 1 FLAG
+            7   AIR CONDITION CLUTCH ON                 1 = ON
+    18          ENGINE RPM
+    19          BAROMETRIC PRESSURE
+    20          TOTAL CROSSOVER COUNTS
+
+
+
+
+
+        CONVERSION FOR A/D COUNTS TO ENGINEERING UNITS
+        ----------------------------------------------
+
+                N = A/D COUNTS
+               EU = ENGINEERING UNITS
+
+        TRY TO KEEP CONVERSION ROUTINES IN ONE OF THE FOLLOWING
+        FORMATS WITH ONLY TWO VARIABLES:
+                EU = N*A + B
+                EU =
+                EU = N
+                EU = TABLE LOOKUP
+
+
+
+   DATA STREAM:
+                                                                ENGINEERING
+    WORD   DESCRIPTION                     CONVERSION             UNITS
+    ----   --------------------------      ------------------  --------------
+    1      PROMID BYTE 1                        NONE
+    2      PROMID BYTE 2                        NONE
+    3      BATTERY VOLTAGE                      EU = N*.1          VOLTS
+    4      COOLANT TEMPERATURE                  TABLE LOOKUP
+    5      VEHICLE SPEED                        NONE
+    6      MANIFOLD ABSOLUTE PRESSURE           EU = N * .0196     VOLTS
+    7      MODE WORD 1                          NONE
+    8      THROTTLE POSITION SENSOR             EU = N*(.0196)     VOLTS
+    9      OXYGEN SENSOR                        EU = N*(4.3403)    MILLIVOLTS
+    10     MIXTURE CONTROL SOLENOID DUTY CYCLE  EU = N/2.56        % DUTY CYCLE
+                                                EU = N*60/256      DEGREES
+    11     MALFUNCTION FLAG WORD 1              NONE
+    12     MALFUNCTION FLAG WORD 2              NONE
+    13     MALFUNCTION FLAG WORD 3              NONE
+    14     CLCC MODE WORD                       NONE
+    15     I/O STATUS WORD 1                    NONE
+    16     I/O STATUS WORD 2                    NONE
+    17     MODE WORD                            NONE
+    18     ENGINE RPM                           EU = N*25            RPM
+    19     BAROMETRIC PRESSURE                  EU = N * .0196     VOLTS
+    20     ALDL RICH LEAN CHANGE COUNTER        SEE **
+
+
+ ** : THIS IS A ROLLOVER COUNTER (0 - 255), TAKE CURRENT DATA STREAM READING
+      SUBTRACT LAST DATA STREAM READING = CROSSCOUNTS.  IF CURRENT READING
+      MINUS LAST READING IS < 0, THEN TAKE CURRENT READING + 255 - LAST
+      READING = CROSSCOUNTS
+
+
+
+
+
+        COOLANT TERMPERATURE CONVERSION
+        --------------------------------
+
+        DEGREES CELSIUS           A/D COUNTS
+        ---------------           ----------
+             -15                     252
+              -5                     249
+               5                     244
+              15                     237
+              25                     228
+              35                     215
+              45                     198
+              55                     179
+              65                     158
+              75                     136
+              85                     115
+              95                     95
+             100                     86
+             105                     78
+             110                     70
+             115                     63
+             120                     57
+
+
+
+
+LAYOUT 000
+:  B 
+  
+Su¦    <_        ú \---+----+----+----+---------+---------+---------+---------+--@-/----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     STANDARD 2      B
+ <

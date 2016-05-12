@@ -1,0 +1,185 @@
+G.M. unidirectional serial data format 80, 100, 160 baud
+--------------------------------------------------------
+
+Serial Data Format
+  The serial data output is a bit synchronized, byte oriented scheme
+  with software transmitting 1-bit at a time in a serial format. Data
+  bytes are transmitted in a binary 9-bit format, one start bit followed
+  by 8-data bits (highest order bit first).
+
+
+
+Bit Timing
+
+  Each bit is transmitted by first causing a high to low transition on
+  the data line (t0), low indicating driver on. If the bit is a logic
+  "0", the data line goes high at (t1); if the bit is a "1", the data
+  line goes high at a later time (t3). The receiver samples the value
+  of the signal at (t2) which is between (t1) and (t3). The next bit
+  starts at (t4) with another high to low transition.
+
+
+   *****      ******************************
+       *      *                .           *
+       *      *                .           *
+       *      *                .           *
+       *      *                .           *
+       ********.................           *
+     t0       t1       t2      t3          t4
+
+                   FIGURE 1
+
+ t0 - start of bit                t0 - t4    6.25ms
+ t1 - "0" transition              t0 - t1    0.2ms  min
+ t3 - "1" transition              t0 - t2    1.5ms - 2.3 ms (data valid period)
+ t2 - sample valid data
+ t4 - start of next bit           t3 - t4    0.5ms  min
+
+
+
+Data Protocol
+
+  The serial data protocol consists of the data and control character
+  sequences and procedures required to transmit a message with sufficient
+  intelligence to allow a receiving station to properly decode.
+
+  The protocol for the serial data output consists of the "start bit"
+  which is the bit preceding each 8-bit data byte (forming a 9-bit byte
+  transmission), and the "sync" character which precedes each transmitted
+  message.
+
+  The protocol is designed to allow a receiving station to "sync" itself
+  anytime it receives 9 or more consecutive "1's" followed by a "0".
+  When the ECM initiates a transmission, it must preface the message
+  with a "sync" character ($FF) with a "1" start bit. Once "sync-ed",
+  as many data bytes as desired may be transmitted, each preceded by a
+  "0" start bit. Issuing each data byte with a "0" start bit insures
+  that no more than 8 consecutive "1's" can occur within the data string
+  thus eliminating the possibility of a "sync" command being buried
+  within the data.
+
+  Once a transmission is complete, the ECM retransmits the contents of
+  the same memory locations (the RAM memory contents may change between
+  transmissions). To do this, the last data byte is followed by another
+  "sync" character, which will "re-sync" the receiver prior to message
+  retransmission.
+
+
+  ÚÄÄÄÄÄÄÄ START BITS
+  ³
+  ³ DATA BITS
+  V ---------------
+  1 1 1 1 1 1 1 1 1  SYNC CHARACTER
+  0 X X X X X X X X  DATA CHARACTER
+  0 X X X X X X X X  "            "
+  0 X X X X X X X X  "            "
+
+
+  0 X X X X X X X X  DATA CHARACTER
+  1 1 1 1 1 1 1 1 1  SYNC CHARACTER
+  0 X X X X X X X X  DATA CHARACTER
+
+
+
+Unidirectional specific information
+-----------------------------------
+
+80 Baud
+-------
+Specific bit timing  (refere to figure 1)
+
+      t0 - t4    12.5ms
+      t0 - t1    0.2ms - 1.2ms
+      t0 - t2    1.5ms - 2.3ms (data valid period)
+      t0 - t3    2.5ms - 11.8ms
+      t3 - t4    0.5ms  min
+
+Electrical Specifications
+
+ unavailable at this time.
+
+
+
+100 Baud
+--------
+Specific bit timing  (refere to figure 1)
+
+      t0 - t4    10ms
+      t0 - t1    0.2ms - 1.4ms
+      t0 - t2    1.5ms - 2.3ms (data valid period)
+      t0 - t3    2.4ms - 9.1ms
+      t3 - t4    0.5ms  min
+
+Electrical Specifications
+
+
+ unavailable at this time.
+
+
+
+160 Baud
+--------
+
+Specific bit timing  (refere to figure 1)
+
+      t0 - t4    6.25ms
+      t0 - t1    0.2ms - 1.4ms
+      t0 - t2    1.5ms - 2.3ms (data valid period)
+      t0 - t3    2.4ms - 5.7ms
+      t3 - t4    0.5ms  min
+
+
+
+
+Electrical Specifications
+
+ Output Voltage High Level ò 3.8V @ -0.4mA
+
+ Output Voltage Low Level ó 1.0V @ 1.0mA
+
+Receiver Requirements
+
+ Input Current High Level Output ó 0.15mA
+
+ Output Current Low Level Output ò -0.4mA
+
+
+G.M. bidirectional serial data format 8192 and 9600 baud
+--------------------------------------------------------
+
+UART format for all 8192 and 9600 is 8 bits, 1 stop and no parity.
+
+ALDL Electrical Specifications for Delco Electronics Control modules
+
+ Transmitter Characteristics
+ ---------------------------
+   Low Level Output Voltage = .8V max  @ 10mA
+
+   High Level Output Voltage = 4.0V min  @ -10mA
+
+   Tristate driver leakage current worst case = ñ 360æA
+
+   Output short circuit current maximum Vo @ -1V to 16V = ñ 75mA
+
+   Output rise time ó 17æs
+
+   Output fall time ó 17æs
+
+
+ Receiver Characteristics
+ ------------------------
+   Ground offset up to 1V
+
+   High Level Input Voltage = 2.8V min
+
+   Low Level Input Voltage = 2.0V max
+
+   Receiver Input Capacitance worst case 13,000pf
+
+   Off Board Driver should be capable of sourcing 10mA while driving the line
+   low, and should have a passive pull up for high level input.
+
+
+
+
+
