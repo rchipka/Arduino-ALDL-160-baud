@@ -22,20 +22,19 @@
 #define ALDL_1_MIN_LENGTH 1850
 #define ALDL_1_MAX_LENGTH 1899
 
-
 int frame[ALDL_FRAME_BUF_SIZE];
 
 volatile unsigned int byteIndex = 0;
 volatile unsigned int bitIndex = 0;
 volatile unsigned int bitTime = 0;
+volatile unsigned int curBit = 0;
 volatile unsigned long curTime = micros();
 volatile unsigned long prevTimeTime = micros();
-volatile unsigned int curBit = 0;
 
 void setup() {
     // Clear the frame buffer
     for (int i = 0; i < ALDL_NUM_WORDS; i++) {
-        frame[i] = (byte) 0x00;
+        frame[i] = (byte)0x00;
     }
 
     pinMode(ALDL_PIN, INPUT);
@@ -43,37 +42,34 @@ void setup() {
 }
 
 void interrupt() {
-    if (!readBit())
-        return;
+    if (!readBit()) return;
 
     if (bitIndex == 0) {
         startBit();
-    }else{
+    } else {
         dataBit();
     }
 }
 
 bool readBit() {
-      curTime = micros();
-      bitTime = curTime - prevTime;
+    curTime = micros();
+    bitTime = curTime - prevTime;
 
-      if (bitTime <= ALDL_0_MAX_LENGTH &&
-          bitTime >= ALDL_0_MIN_LENGTH) {
+    if (bitTime <= ALDL_0_MAX_LENGTH && bitTime >= ALDL_0_MIN_LENGTH) {
         curBit = 0;
-      }else if (bitTime <= ALDL_1_MAX_LENGTH &&
-                bitTime >= ALDL_1_MIN_LENGTH) {
+    } else if (bitTime <= ALDL_1_MAX_LENGTH && bitTime >= ALDL_1_MIN_LENGTH) {
         curBit = 1;
-      }else if (bitTime < ALDL_0_MIN_LENGTH) {
-          // Too short to be a bit
-          // Could be noise so we don't reset prevTime
-          return false;
-      }else {
-          // Too long to be a bit
+    } else if (bitTime < ALDL_0_MIN_LENGTH) {
+        // Too short to be a bit
+        // Could be noise so we don't reset prevTime
+        return false;
+    } else {
+        // Too long to be a bit
         prevTime = curTime;
         return false;
-      }
+    }
 
-      prevTime = curTime;
+    prevTime = curTime;
 }
 
 void syncBit() {
@@ -89,26 +85,26 @@ void syncBit() {
 }
 
 void startBit() {
-  if (curBit == 1) {
-    // Start bit is "1" which means
-    // we're receiving a "sync" bit
-    syncBit();
-    return;
-  }
+    if (curBit == 1) {
+        // Start bit is "1" which means
+        // we're receiving a "sync" bit
+        syncBit();
+        return;
+    }
 
-  ++bitIndex;
+    ++bitIndex;
 }
 
 // Add data bit to the packet framefer
 void dataBit() {
-  frame[byteIndex] |= curBit << bitIndex;
+    frame[byteIndex] |= curBit << bitIndex;
 
-  if (++bitIndex > ALDL_BYTE_SIZE) {
-      // We have a complete data byte
-      if (++byteIndex >= ALDL_FRAME_BUF_SIZE) {
-          byteIndex = 0;
-      }
+    if (++bitIndex > ALDL_BYTE_SIZE) {
+        // We have a complete data byte
+        if (++byteIndex >= ALDL_FRAME_BUF_SIZE) {
+            byteIndex = 0;
+        }
 
-      bitIndex = 0;
-  }
+        bitIndex = 0;
+    }
 }
